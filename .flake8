@@ -1,7 +1,7 @@
 [flake8]
-ignore = D103, D401
+ignore = D103, D401, PT009, E731
 exclude = .git,__pycache__,build,dist
-inline-quotes = '
+inline-quotes = "
 dictionaries = en_US,python,technical,django
 spellcheck-targets = comments
 max-complexity = 10

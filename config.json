@@ -1,6 +1,5 @@
-
 {
-    "datset_path" : "C:/desktop/image_dir",
-    "extension": "jpeg",
-    "feature_type": "HAHOG"
+  "dataset_path": "C:/desktop/image_dir",
+  "extension": "jpeg",
+  "feature_type": "SIFT"
 }
