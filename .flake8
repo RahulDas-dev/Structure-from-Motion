@@ -1,0 +1,13 @@
+[flake8]
+ignore = D103, D401
+exclude = .git,__pycache__,build,dist
+inline-quotes = '
+dictionaries = en_US,python,technical,django
+spellcheck-targets = comments
+max-complexity = 10
+max-line-length = 120
+
+[isort]
+line_length=120
+default_section = THIRDPARTY
+sections = STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER
