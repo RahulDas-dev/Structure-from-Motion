@@ -1,5 +1,6 @@
 {
   "dataset_path": "C:/desktop/image_dir",
+  "output_path": "C:/Users/admin/Desktop/codespace/python/output_sfm",
   "extension": "jpeg",
   "feature_type": "SIFT"
 }

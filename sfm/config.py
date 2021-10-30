@@ -26,6 +26,7 @@ class Config(object):
         """Validates The user defined configuration."""
         with open(config_path) as file:
             userConfig = json.load(file)
+        #
         # Adding Validation for Directory
         #
         extension = userConfig.get("extension", None)
@@ -35,21 +36,34 @@ class Config(object):
         if isinstance(extension, str):
             if extension not in default_config.get("extension"):
                 raise ValueError("extension is not Valid")
+        #
         # Adding Validation for Directory
         #
         dataset_path = userConfig.get("dataset_path", None)
         if os.path.isdir(dataset_path):
             images = list(
                 filter(
-                    lambda x: os.path.basename(x).split(".")[-1]
-                    in default_config.get("extension"),
+                    lambda x: os.path.basename(x).split(".")[-1] in default_config.get("extension"),
                     os.listdir(dataset_path),
                 )
             )
             if len(images) == 0:
-                raise FileNotFoundError("dataset_path should contain images")
+                raise FileNotFoundError("dataset_path directory should contain image files")
         else:
-            raise NotADirectoryError("dataset_path should be a valid directory")
+            raise NotADirectoryError("dataset_path directory should be a valid")
+        #
+        # Validating output_path
+        #
+        output_path = userConfig.get("output_path", None)
+        if output_path is None:
+            raise ValueError("Attribute output_path in config.json can not be empty")
+        if os.path.isdir(output_path):
+            if len(os.listdir(output_path)) > 0:
+                raise IsADirectoryError("output_path directory is not empty")
+            if os.access(output_path, os.W_OK) is not True:
+                raise PermissionError("output_path directory should be a Writable")
+        else:
+            raise NotADirectoryError("output_path directory should be a valid")
         return userConfig
 
     @property
