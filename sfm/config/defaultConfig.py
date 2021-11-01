@@ -4,7 +4,7 @@
 from typing import Dict
 
 config: Dict = {
-    "extension": ["jpg", "JPEG", "png", "PNG"],
+    "extension": ["jpg", "jpeg", "JPEG", "png", "PNG"],
     "feature_type": "SIFT",
     "feature_root": 1,
     "sift_peak_threshold": 0.1,

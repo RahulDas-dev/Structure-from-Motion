@@ -1,5 +1,5 @@
 [flake8]
-ignore = D103, D401, PT009, E731
+ignore = D103, D401, PT009, E731, C901
 exclude = .git,__pycache__,build,dist
 inline-quotes = "
 dictionaries = en_US,python,technical,django
