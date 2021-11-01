@@ -4,7 +4,7 @@ import unittest
 from test import helper
 
 from sfm.config.config import Config
-from sfm.config.defaultConfig import config as default_config
+from sfm.config.default_config import config as default_config
 
 
 def setUpModule():

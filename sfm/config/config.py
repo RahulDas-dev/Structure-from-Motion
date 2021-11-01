@@ -6,7 +6,7 @@ import os
 from datetime import datetime
 from typing import Dict, List, Union
 
-from sfm.config.defaultConfig import config as default_config
+from sfm.config.default_config import config as default_config
 
 
 class Config(object):

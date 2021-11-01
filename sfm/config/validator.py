@@ -4,7 +4,7 @@
 import os
 from typing import Dict
 
-from sfm.config.defaultConfig import config as default_config
+from sfm.config.default_config import config as default_config
 
 
 def validate_userdefined_config(config_obj: Dict, re_start: bool = False) -> bool:
