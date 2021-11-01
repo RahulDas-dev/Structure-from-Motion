@@ -1,10 +1,10 @@
 """Unittesting Module for Config Class."""
 
 import unittest
+from test import helper
 
 from sfm.config.config import Config
 from sfm.config.defaultConfig import config as default_config
-from sfm.test import helper
 
 
 def setUpModule():

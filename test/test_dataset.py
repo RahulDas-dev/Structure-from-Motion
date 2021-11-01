@@ -3,15 +3,15 @@
 import os
 import unittest
 from random import shuffle
-
-from sfm.dataset import Dataset
-from sfm.test.helper import (
+from test.helper import (
     DATASET_PATH,
     create_temp_dataset_dir,
     create_temp_test_dir,
     create_valid_dataset_files,
     delete_temp_test_dir,
 )
+
+from sfm.dataset import Dataset
 
 
 def setUpModule():
