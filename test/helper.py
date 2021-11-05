@@ -9,11 +9,11 @@ import cv2
 import numpy as np
 
 _CURR_DIR = os.path.dirname(os.path.abspath(__file__))
-TEMP_TEST_DIR_PRAENT = os.path.abspath(os.path.join(_CURR_DIR, os.pardir, os.pardir))
-TEMP_TEST_DIR = os.path.join(TEMP_TEST_DIR_PRAENT, "temp_test")
+_CURR_DIR_PRAENT = os.path.abspath(os.path.join(_CURR_DIR, os.pardir))
+TEMP_TEST_DIR = os.path.join(_CURR_DIR_PRAENT, "temp_test")
 CONFIG_JSON_PATH = os.path.join(TEMP_TEST_DIR, "config.json")
-DATASET_PATH = os.path.join(TEMP_TEST_DIR, "dataset")
-WRONG_DATASET_PATH = os.path.join(TEMP_TEST_DIR, "wrong_dataset")
+DATASET_PATH = os.path.join(_CURR_DIR_PRAENT, "dataset", "box")
+WRONG_DATASET_PATH = os.path.join(_CURR_DIR_PRAENT, "dataset", "wrong_dataset")
 OUTPUT_PATH = os.path.join(TEMP_TEST_DIR, "output")
 WRONG_OUTPUT_PATH = os.path.join(TEMP_TEST_DIR, "wrong_output")
 
@@ -38,38 +38,44 @@ def delete_config_json(config):
         os.remove(CONFIG_JSON_PATH)
 
 
-def create_temp_dataset_dir():
+def create_invalid_dataset_dir():
     if os.path.exists(TEMP_TEST_DIR) is not True:
         os.mkdir(TEMP_TEST_DIR)
-    if os.path.exists(DATASET_PATH) is not True:
-        os.mkdir(DATASET_PATH)
+    if os.path.exists(WRONG_DATASET_PATH) is not True:
+        os.mkdir(WRONG_DATASET_PATH)
     else:
-        rmtree(DATASET_PATH)
-        os.mkdir(DATASET_PATH)
+        rmtree(WRONG_DATASET_PATH)
+        os.mkdir(WRONG_DATASET_PATH)
 
 
 def create_valid_dataset_files():
     if os.path.exists(DATASET_PATH) is not True:
         os.mkdir(DATASET_PATH)
     for i in range(5):
-        random_image = np.random.randint(0, 256, size=(300, 300, 3))
-        cv2.imwrite(os.path.join(DATASET_PATH, f"image_{i}.jpg"), random_image)
-    for i in range(5):
         with open(os.path.join(DATASET_PATH, f"dataset_{i}.text"), "w") as text_file:
             text_file.write("This Is only For Testing")
 
 
 def create_invalid_dataset_files():
-    if os.path.exists(DATASET_PATH) is not True:
-        os.mkdir(DATASET_PATH)
+    if os.path.exists(WRONG_DATASET_PATH) is not True:
+        os.mkdir(WRONG_DATASET_PATH)
     for i in range(5):
-        with open(os.path.join(DATASET_PATH, f"dataset_{i}.text"), "w") as text_file:
+        with open(os.path.join(WRONG_DATASET_PATH, f"dataset_{i}.text"), "w") as text_file:
             text_file.write("This Is only For Testing")
 
 
-def delete_temp_dataset_dir():
+def delete_temp_test_dir():
     if os.path.exists(TEMP_TEST_DIR):
         rmtree(TEMP_TEST_DIR)
+
+
+def clean_dataset_dir():
+    if os.path.exists(WRONG_DATASET_PATH):
+        rmtree(WRONG_DATASET_PATH)
+    for file in DATASET_PATH:
+        if os.path.basename(file).split(".")[-1] != "txt":
+            continue
+        os.remove(file)
 
 
 def create_temp_output_dir(writeble=True):

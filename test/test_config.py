@@ -13,6 +13,7 @@ def setUpModule():
 
 
 def tearDownModule():
+    helper.clean_dataset_dir()
     helper.delete_temp_test_dir()
 
 
@@ -26,9 +27,7 @@ class TestConfigWithNoRestart(unittest.TestCase):
             "dataset_path": helper.DATASET_PATH,
             "output_path": helper.OUTPUT_PATH,
         }
-        helper.create_temp_dataset_dir()
         helper.create_valid_dataset_files()
-        helper.create_temp_output_dir()
         cls.config = Config(config)
 
     @classmethod
@@ -71,7 +70,6 @@ class TestConfigWithRestart(unittest.TestCase):
         }
         helper.create_temp_dataset_dir()
         helper.create_valid_dataset_files()
-        helper.create_temp_output_dir()
         cls.config = Config(config, True)
 
     @classmethod

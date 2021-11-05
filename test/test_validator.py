@@ -49,7 +49,7 @@ class TestValidatorFunction(unittest.TestCase):
             "extension": ["PNG", "jpg"],
             "dataset_path": helper.DATASET_PATH,
         }
-        helper.create_temp_dataset_dir()
+        helper.create_valid_dataset_files()
         with self.assertRaises(FileNotFoundError) as context:
             _ = validate_userdefined_config(config)
         self.assertEqual("dataset_path directory should contain image files", str(context.exception))
@@ -60,7 +60,6 @@ class TestValidatorFunction(unittest.TestCase):
             "extension": ["PNG", "jpg"],
             "dataset_path": helper.DATASET_PATH,
         }
-        helper.create_temp_dataset_dir()
         helper.create_valid_dataset_files()
         with self.assertRaises(ValueError) as context:
             _ = validate_userdefined_config(config)
@@ -73,7 +72,6 @@ class TestValidatorFunction(unittest.TestCase):
             "dataset_path": helper.DATASET_PATH,
             "output_path": helper.WRONG_OUTPUT_PATH,
         }
-        helper.create_temp_dataset_dir()
         helper.create_valid_dataset_files()
         with self.assertRaises(NotADirectoryError) as context:
             _ = validate_userdefined_config(config)
@@ -86,7 +84,6 @@ class TestValidatorFunction(unittest.TestCase):
             "dataset_path": helper.DATASET_PATH,
             "output_path": helper.OUTPUT_PATH,
         }
-        helper.create_temp_dataset_dir()
         helper.create_valid_dataset_files()
         helper.create_temp_output_dir()
         helper.create_invalid_output_files()
