@@ -23,5 +23,9 @@ def singleton(class_):
                 raise Exception("Class Should be initilazed first")
             return WrapperClass.__instance
 
+        @classmethod
+        def isSealed(cls):
+            return WrapperClass.__sealed
+
     WrapperClass.__name__ = class_.__name__
     return WrapperClass
