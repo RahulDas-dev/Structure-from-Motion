@@ -5,9 +5,6 @@ import json
 import os
 from shutil import rmtree
 
-import cv2
-import numpy as np
-
 _CURR_DIR = os.path.dirname(os.path.abspath(__file__))
 _CURR_DIR_PRAENT = os.path.abspath(os.path.join(_CURR_DIR, os.pardir))
 TEMP_TEST_DIR = os.path.join(_CURR_DIR_PRAENT, "temp_test")
