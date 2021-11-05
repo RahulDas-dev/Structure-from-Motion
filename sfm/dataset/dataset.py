@@ -1,17 +1,20 @@
 import os
 from itertools import combinations
 from os import path
-from typing import Callable, List, Union
+from typing import Callable, List, Type, Union
+
+from sfm.dataset.data import Data
 
 
 class Dataset(object):
     """Data Set Loader."""
 
     __extension: List[str]
-    __images: List[str]
+    __images: List[Type[Data]]
     __sorted: bool
+    __state: str
 
-    __slots__ = ("__extension", "__images", "__sorted")
+    __slots__ = ("__extension", "__images", "__sorted", "__state")
 
     def __init__(self, image_dir: List[str], extension: Union[str, List[str]]):
         """Dataset Object Initialaztion.
@@ -32,8 +35,9 @@ class Dataset(object):
                 os.listdir(image_dir),
             )
         )
-        self.__images = [os.path.join(image_dir, file) for file in images]
+        self.__images = [Data(os.path.join(image_dir, file)) for file in images]
         self.__sorted = False
+        self.__state = None
 
     def __len__(self) -> int:
         """Returns the count of images."""
@@ -42,6 +46,10 @@ class Dataset(object):
     @property
     def isSorted(self) -> bool:
         return self.__sorted
+
+    @property
+    def state(self) -> bool:
+        return self.__state  
 
     def sortImages(self, sortfunc: Callable[[str], Union[int, float]]):
         self.__images.sort(key=sortfunc)

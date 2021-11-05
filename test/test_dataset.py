@@ -11,7 +11,7 @@ from test.helper import (
     delete_temp_test_dir,
 )
 
-from sfm.dataset import Dataset
+from sfm.dataset.dataset import Dataset
 
 
 def setUpModule():
