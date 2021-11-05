@@ -32,6 +32,7 @@ class TestConfigWithNoRestart(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        helper.clean_dataset_dir()
         cls.config = None
 
     def test_properties(self):
@@ -74,6 +75,7 @@ class TestConfigWithRestart(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        helper.clean_dataset_dir()
         cls.config = None
 
 

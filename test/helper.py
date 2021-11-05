@@ -52,7 +52,7 @@ def create_valid_dataset_files():
     if os.path.exists(DATASET_PATH) is not True:
         os.mkdir(DATASET_PATH)
     for i in range(5):
-        with open(os.path.join(DATASET_PATH, f"dataset_{i}.text"), "w") as text_file:
+        with open(os.path.join(DATASET_PATH, f"dataset_{i}.txt"), "w") as text_file:
             text_file.write("This Is only For Testing")
 
 
@@ -60,7 +60,7 @@ def create_invalid_dataset_files():
     if os.path.exists(WRONG_DATASET_PATH) is not True:
         os.mkdir(WRONG_DATASET_PATH)
     for i in range(5):
-        with open(os.path.join(WRONG_DATASET_PATH, f"dataset_{i}.text"), "w") as text_file:
+        with open(os.path.join(WRONG_DATASET_PATH, f"dataset_{i}.txt"), "w") as text_file:
             text_file.write("This Is only For Testing")
 
 
@@ -72,10 +72,10 @@ def delete_temp_test_dir():
 def clean_dataset_dir():
     if os.path.exists(WRONG_DATASET_PATH):
         rmtree(WRONG_DATASET_PATH)
-    for file in DATASET_PATH:
+    for file in os.listdir(DATASET_PATH):
         if os.path.basename(file).split(".")[-1] != "txt":
             continue
-        os.remove(file)
+        os.remove(os.path.join(DATASET_PATH, file))
 
 
 def create_temp_output_dir(writeble=True):
@@ -92,5 +92,5 @@ def create_invalid_output_files():
     if os.path.exists(OUTPUT_PATH) is not True:
         os.mkdir(OUTPUT_PATH)
     for i in range(5):
-        with open(os.path.join(OUTPUT_PATH, f"output_{i}.text"), "w") as text_file:
+        with open(os.path.join(OUTPUT_PATH, f"output_{i}.txt"), "w") as text_file:
             text_file.write("This Is only For Testing")

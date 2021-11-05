@@ -30,6 +30,7 @@ class TestComponent(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        helper.clean_dataset_dir()
         cls.config = None
 
 

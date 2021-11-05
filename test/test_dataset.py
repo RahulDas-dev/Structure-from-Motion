@@ -61,7 +61,7 @@ class TestDatsetObject(unittest.TestCase):
         images = [file for file in os.listdir(DATASET_PATH) if os.path.basename(file).split(".")[-1] in self.extension]
         images = [os.path.join(DATASET_PATH, file) for file in images]
         shuffle((images))
-        sortFunction = lambda x: int((os.path.basename(x).split(".")[0]).split("_")[1])
+        sortFunction = lambda x: int((os.path.basename(x).split(".")[0]).split("_")[-1])
         images.sort(key=sortFunction)
         self.dataset.sortImages(sortFunction)
         self.assertListEqual(images, self.dataset.getImagesList)
