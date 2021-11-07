@@ -1,10 +1,12 @@
 """Module Defines Data object."""
 
 import os
-from typing import Callable, List, Union
+
+# from typing import Callable, List, Union
 
 
 class Data(object):
+    """Class Defines Data Object."""
 
     __name: str
     __height: int
@@ -23,8 +25,8 @@ class Data(object):
 
     @property
     def basename(self) -> str:
-        basename = os.path.basename(self.__name).split(".")[:-1]
-        return ".".join(basename) if isinstance(basename, list) else basename
+        baseName = os.path.basename(self.__name).split(".")[:-1]
+        return ".".join(baseName) if isinstance(baseName, list) else baseName
 
     @property
     def extension(self) -> str:

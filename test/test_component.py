@@ -5,8 +5,6 @@ from test import helper
 
 from sfm.component import Component
 from sfm.config.config import Config
-from sfm.config.default_config import config as default_config
-from sfm.state import APP_STATE_DETAILS
 
 
 def setUpModule():
@@ -38,13 +36,21 @@ class TestComponent(unittest.TestCase):
         """unit Testing component class."""
 
         class Mycompent(Component):
-            def __init__(self, config, state="EXIF_EXTRACTION"):
-                super().__init__(config, state)
+            def __init__(self, state="EXIF_EXTRACTION"):
+                super().__init__(state)
 
-            def run(self):
+            def move_forward(self):
                 print("running the Mycomponnet")
 
-        comp = Mycompent(self.config, "EXIF_EXTRACTION")
+            @property
+            def next_component(self):
+                return 1
+
+            @property
+            def iscompleted(self):
+                return True
+
+        comp = Mycompent("EXIF_EXTRACTION")
 
         self.assertEqual(comp.output_directory_path, os.path.join(helper.OUTPUT_PATH, "exif_data"))
         self.assertTrue(os.path.isdir(comp.output_directory_path))

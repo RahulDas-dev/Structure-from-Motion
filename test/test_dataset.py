@@ -53,7 +53,7 @@ class TestDatsetObject(unittest.TestCase):
         self.assertEqual(len(self.dataset), len(images))
 
     def test_getItem(self):
-        allFilesvalid = all([os.path.exists(self.dataset[i]) for i in range(len(self.dataset))])
+        allFilesvalid = all([os.path.exists(self.dataset[i].name) for i in range(len(self.dataset))])
         self.assertEqual(allFilesvalid, True)
 
     def test_sorted(self):
@@ -62,8 +62,9 @@ class TestDatsetObject(unittest.TestCase):
         images = [os.path.join(DATASET_PATH, file) for file in images]
         shuffle((images))
         sortFunction = lambda x: int((os.path.basename(x).split(".")[0]).split("_")[-1])
+        sortFunction1 = lambda x: int(x.basename.split("_")[-1])
         images.sort(key=sortFunction)
-        self.dataset.sortImages(sortFunction)
+        self.dataset.sortImages(sortFunction1)
         self.assertListEqual(images, self.dataset.getImagesList)
         self.assertTrue(self.dataset.isSorted)
 

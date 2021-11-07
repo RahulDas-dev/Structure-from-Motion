@@ -49,9 +49,10 @@ class Dataset(object):
 
     @property
     def state(self) -> bool:
-        return self.__state  
+        return self.__state
 
     def sortImages(self, sortfunc: Callable[[str], Union[int, float]]):
+        lambda x: int(x.basename.split("_")[-1])
         self.__images.sort(key=sortfunc)
         self.__sorted = True
 
@@ -63,4 +64,4 @@ class Dataset(object):
 
     @property
     def getImagesList(self) -> List[str]:
-        return self.__images
+        return list(map(lambda x: x.name, self.__images))
