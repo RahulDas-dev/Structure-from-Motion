@@ -1,7 +1,8 @@
 """Module Reads Exif Data."""
 
 import logging
-from typing import Dict
+from datetime import datetime, timedelta
+from typing import Dict, Optional, Tuple
 
 import cv2
 
@@ -53,21 +54,71 @@ class ExifReader(object):
         ori = self.metadata.get("orientation", 1)
         return ori if type(ori) == int and ori != 0 else 1
 
-    def __format_date_time(self, date_stamp, time_stamp):
-        pass
-
     @property
     def timestamp(self):
-        time_stamp = self.metadata.get("gps_timestamp", None)
-        date_stamp = self.metadata.get("gps_datestamp", None)
-        if time_stamp is not None and date_stamp is not None:
-            try:
-                times_in_sec = self.__format_date_time(date_stamp, time_stamp)
-            except (TypeError, ValueError):
-                pass
+        if self.metadata.datetime_original is not None:
+            return self.__format_date_time(
+                self.metadata.datetime_original,
+                self.metadata.subsec_time_original,
+                self.metadata.get("offset_time_original"),
+            )
+        elif self.metadata.datetime_digitized is not None:
+            return self.__format_date_time(
+                self.metadata.datetime_digitized,
+                self.metadata.subsec_time_digitized,
+                self.metadata.get("offset_time_digitized"),
+            )
+        elif self.metadata.datetime is not None:
+            return self.__format_date_time(
+                self.metadata.datetime,
+                self.metadata.subsec_time,
+                self.metadata.get("offset_time"),
+            )
+        else:
+            return None
+
+    @staticmethod
+    def __format_date_time(date_time, sub_sec, offset):
+        sub_sec = 0 if sub_sec is None else sub_sec
+        datetime_str = "{0:s}.{1:s}".format(date_time, sub_sec)
+        datetime_dt = datetime.strptime(datetime_str, "%Y:%m:%d %H:%M:%S.%f")
+        if offset is not None:
+            hour = -int(str(offset)[0:3])
+            minute = int(str(offset)[4:6])
+            datetime_dt = datetime_dt - timedelta(hours=hour, minutes=minute)
+        return (datetime_dt - datetime(1970, 1, 1)).total_seconds()
+
+    @property
+    def altitude(self) -> float:
+        if self.metadata.gps_altitude is None:
+            return None
+        if self.metadata.gps_altitude_ref is None:
+            return self.metadata.gps_altitude
+        if self.metadata.gps_altitude_ref == 1:
+            return -self.metadata.gps_altitude
+        return self.metadata.gps_altitude
+
+    @staticmethod
+    def decimal_coords(coords: Tuple[float, float, float], ref: Optional[str]) -> float:
+        decimal_degrees = coords[0] + coords[1] / 60.0 + coords[2] / 3600.0
+        if ref == "S" or ref == "W":
+            decimal_degrees = -decimal_degrees
+        return decimal_degrees
+
+    @property
+    def latitude(self) -> float:
+        if self.metadata.gps_latitude is None:
+            return None
+        return self.decimal_coords(self.metadata.gps_latitude, self.metadata.gps_latitude_ref)
+
+    @property
+    def longitude(self) -> float:
+        if self.metadata.gps_longitude is None:
+            return None
+        return self.decimal_coords(self.metadata.gps_longitude, self.metadata.gps_longitude_ref)
 
     def data_as_dictonary(self) -> Dict:
-        status = f"contains EXIF (version {self.exif_version}) information."
+
         return {
             "make": self.make,
             "model": self.model,
@@ -76,6 +127,6 @@ class ExifReader(object):
             # "projection_type": projection_type,
             # "focal_ratio": focal_ratio,
             "orientation": self.orientation,
-            # "capture_time": capture_time,
-            # "gps": geo,
+            "capture_time": self.timestamp,
+            "gps": {"altitude": self.altitude, "latitude": self.latitude, "longitude": self.longitude},
         }
