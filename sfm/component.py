@@ -2,7 +2,7 @@
 
 import os
 from abc import ABC, abstractmethod, abstractproperty
-from typing import Type
+from typing import Optional, Type
 
 from sfm.config.config import Config
 from sfm.dataset.dataset import Dataset
@@ -47,7 +47,11 @@ class Component(ABC):
 
     @property
     def output_directory_path(self) -> str:
-        return self.__config.sub_directory_path(self.__state)
+        return self.__config.sub_directory_path(self.__state)[0]
+
+    @property
+    def output_file(self) -> Optional[str]:
+        return self.__config.sub_directory_path(self.__state)[1]
 
     @property
     def is_output_dir_exists(self):

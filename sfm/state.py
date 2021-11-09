@@ -2,7 +2,7 @@
 
 
 APP_STATE_DETAILS = [
-    {"name": "EXIF_EXTRACTION", "subdir": "exif_data"},
+    {"name": "EXIF_EXTRACTION", "file": "exif_data.json"},
     {"name": "FEATURE_EXTRACTION", "subdir": "feature_data"},
     {"name": "MATCHING_FEATURE", "subdir": "matching_data"},
 ]

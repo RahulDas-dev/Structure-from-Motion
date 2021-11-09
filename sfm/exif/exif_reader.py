@@ -1,6 +1,6 @@
 """Module Reads Exif Data."""
-
 import logging
+import os
 from datetime import datetime, timedelta
 from typing import Dict, Optional, Tuple
 
@@ -17,10 +17,12 @@ class ExifReader(object):
     metadata: Dict
     img_height: int
     img_width: int
+    name: str
 
     def __init__(self, image_path: str):
         with open(image_path, "rb") as image_file:
             self.metadata = Image(image_file)
+        self.name = os.path.basename(image_file)
         image = cv2.imread(image_path)
         self.img_height, self.img_width = image.shape[:2]
         image = None
@@ -118,8 +120,8 @@ class ExifReader(object):
         return self.decimal_coords(self.metadata.gps_longitude, self.metadata.gps_longitude_ref)
 
     def data_as_dictonary(self) -> Dict:
-
         return {
+            "file": self.name,
             "make": self.make,
             "model": self.model,
             "width": self.width,

@@ -4,7 +4,7 @@
 import json
 import os
 from datetime import datetime
-from typing import Dict, List, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 from sfm.config.default_config import config as default_config
 from sfm.state import APP_STATE_DETAILS
@@ -90,13 +90,13 @@ class Config(object):
         """Returns the list if of Statenames."""
         return list(map(lambda x: x["name"], APP_STATE_DETAILS))
 
-    def sub_directory_path(self, state_name: str) -> str:
+    def sub_directory_path(self, state_name: str) -> Tuple[str, Optional[str]]:
         if state_name not in self.valid_state_names():
             raise ValueError(f"State {state_name} is not valid")
         statedict = list(filter(lambda x: x["name"] == state_name, APP_STATE_DETAILS))[0]
         subdir = statedict.get("subdir", None)
         filename = statedict.get("file", None)
         if filename is not None:
-            return self.output_path
+            return (self.output_path, filename)
         else:
-            return os.path.join(self.output_path, subdir)
+            return (os.path.join(self.output_path, subdir), None)
