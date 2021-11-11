@@ -31,7 +31,9 @@ class TestDatsetInstantiation(unittest.TestCase):
         """Instantiating Dataset Object with None."""
         with self.assertRaises(ValueError) as context:
             _ = Dataset(None, ["jpg", "png", "PNG", "jpeg"])
-        self.assertEqual("image_dir should be a valid directory", str(context.exception))
+        self.assertEqual(
+            "image_dir should be a valid directory", str(context.exception)
+        )
 
 
 class TestDatsetObject(unittest.TestCase):
@@ -49,16 +51,26 @@ class TestDatsetObject(unittest.TestCase):
         self.dataset = None
 
     def test_length(self):
-        images = [file for file in os.listdir(DATASET_PATH) if os.path.basename(file).split(".")[-1] in self.extension]
+        images = [
+            file
+            for file in os.listdir(DATASET_PATH)
+            if os.path.basename(file).split(".")[-1] in self.extension
+        ]
         self.assertEqual(len(self.dataset), len(images))
 
     def test_getItem(self):
-        allFilesvalid = all([os.path.exists(self.dataset[i].name) for i in range(len(self.dataset))])
+        allFilesvalid = all(
+            [os.path.exists(self.dataset[i].name) for i in range(len(self.dataset))]
+        )
         self.assertEqual(allFilesvalid, True)
 
     def test_sorted(self):
         self.assertFalse(self.dataset.isSorted)
-        images = [file for file in os.listdir(DATASET_PATH) if os.path.basename(file).split(".")[-1] in self.extension]
+        images = [
+            file
+            for file in os.listdir(DATASET_PATH)
+            if os.path.basename(file).split(".")[-1] in self.extension
+        ]
         images = [os.path.join(DATASET_PATH, file) for file in images]
         shuffle((images))
         sortFunction = lambda x: int((os.path.basename(x).split(".")[0]).split("_")[-1])

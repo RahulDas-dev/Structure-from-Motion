@@ -1,16 +1,17 @@
 """Module Defines Data object."""
 
 import os
+from typing import ClassVar
 
-# from typing import Callable, List, Union
+from sfm.utility.helper import base_name_converter
 
 
 class Data(object):
     """Class Defines Data Object."""
 
-    __name: str
-    __height: int
-    __width: int
+    __name: ClassVar[str]
+    __height: ClassVar[int]
+    __width: ClassVar[int]
 
     __slots__ = ("__name", "__height", "__width")
 
@@ -25,8 +26,7 @@ class Data(object):
 
     @property
     def basename(self) -> str:
-        baseName = os.path.basename(self.__name).split(".")[:-1]
-        return ".".join(baseName) if isinstance(baseName, list) else baseName
+        return base_name_converter(self.__name)
 
     @property
     def extension(self) -> str:

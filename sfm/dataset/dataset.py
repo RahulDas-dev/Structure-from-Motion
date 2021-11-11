@@ -1,7 +1,6 @@
 import os
 from itertools import combinations
-from os import path
-from typing import Callable, List, Type, Union
+from typing import Callable, ClassVar, List, Type, Union
 
 from sfm.dataset.data import Data
 from tqdm import tqdm
@@ -10,10 +9,10 @@ from tqdm import tqdm
 class Dataset(object):
     """Data Set Loader."""
 
-    __extension: List[str]
-    __images: List[Type[Data]]
-    __sorted: bool
-    __state: str
+    __extension: ClassVar[List[str]]
+    __images: ClassVar[List[Type[Data]]]
+    __sorted: ClassVar[bool]
+    __state: ClassVar[str]
 
     __slots__ = ("__extension", "__images", "__sorted", "__state")
 

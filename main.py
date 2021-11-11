@@ -46,12 +46,24 @@ if __name__ == "__main__":
     loggger = logging.getLogger(__name__)
     try:
         parser = argparse.ArgumentParser(
-            prog="main.py", usage="%(prog)s [options]", description="""Process SFM on Given Configuration"""
+            prog="main.py",
+            usage="%(prog)s [options]",
+            description="""Process SFM on Given Configuration""",
         )
         parser.add_argument(
-            "--config", default=None, dest="config_path", action="store", help="absolute path of config.json"
+            "--config",
+            default=None,
+            dest="config_path",
+            action="store",
+            help="absolute path of config.json",
         )
-        parser.add_argument("--re", default=False, dest="re_start", action="store_true", help="Set If want to restart")
+        parser.add_argument(
+            "--re",
+            default=False,
+            dest="re_start",
+            action="store_true",
+            help="Set If want to restart",
+        )
         arguments = parser.parse_args()
         config_path, re_start = arguments.config_path, arguments.re_start
 

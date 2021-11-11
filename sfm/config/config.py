@@ -36,9 +36,11 @@ class Config(object):
 
         default config and User defined config will be merged
         """
-        if Config.__instance != None:
+        if Config.__instance is not None:
             print(Config.__instance)
-            raise Exception("Config Class has been instantiated, kindly use Instance Method")
+            raise Exception(
+                "Config Class has been instantiated, kindly use Instance Method"
+            )
         if re_start:
             self.__config = config_obj
         else:
@@ -53,7 +55,7 @@ class Config(object):
         """Saving the config file for Future use, in output_path."""
         output_path = self.__config.get("output_path")
         with open(os.path.join(output_path, "config.json"), "w") as confilg_file:
-            json.dump(self.__config, confilg_file)
+            json.dump(self.__config, confilg_file, indent=4, sort_keys=True)
 
     @property
     def experiment_id(self) -> str:
@@ -93,7 +95,9 @@ class Config(object):
     def sub_directory_path(self, state_name: str) -> Tuple[str, Optional[str]]:
         if state_name not in self.valid_state_names():
             raise ValueError(f"State {state_name} is not valid")
-        statedict = list(filter(lambda x: x["name"] == state_name, APP_STATE_DETAILS))[0]
+        statedict = list(filter(lambda x: x["name"] == state_name, APP_STATE_DETAILS))[
+            0
+        ]
         subdir = statedict.get("subdir", None)
         filename = statedict.get("file", None)
         if filename is not None:

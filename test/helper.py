@@ -57,7 +57,9 @@ def create_invalid_dataset_files():
     if os.path.exists(WRONG_DATASET_PATH) is not True:
         os.mkdir(WRONG_DATASET_PATH)
     for i in range(5):
-        with open(os.path.join(WRONG_DATASET_PATH, f"dataset_{i}.txt"), "w") as text_file:
+        with open(
+            os.path.join(WRONG_DATASET_PATH, f"dataset_{i}.txt"), "w"
+        ) as text_file:
             text_file.write("This Is only For Testing")
 
 

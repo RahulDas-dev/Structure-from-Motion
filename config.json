@@ -1,6 +1,6 @@
 {
-  "dataset_path": "/mnt/sfm/Structure-from-Motion/dataset/box",
-  "output_path": "/mnt/sfm/sfmout",
-  "extension": "jpeg",
+  "dataset_path": "C:/Users/admin/Desktop/codespace/python/structure_from_motion/dataset/box",
+  "output_path": "C:/Users/admin/Desktop/codespace/python/output_sfm",
+  "extension": "jpg",
   "feature_type": "SIFT"
 }

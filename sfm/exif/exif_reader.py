@@ -1,10 +1,12 @@
 """Module Reads Exif Data."""
+
+
 import logging
-import os
 from datetime import datetime, timedelta
-from typing import Dict, Optional, Tuple
+from typing import ClassVar, Dict, Optional, Tuple
 
 import cv2
+from sfm.utility.helper import base_name_converter
 
 from exif import Image
 
@@ -14,15 +16,15 @@ logger = logging.getLogger(__name__)
 class ExifReader(object):
     """Module Reads Exif Data."""
 
-    metadata: Dict
-    img_height: int
-    img_width: int
-    name: str
+    metadata: ClassVar[Dict]
+    img_height: ClassVar[int]
+    img_width: ClassVar[int]
+    name: ClassVar[str]
 
     def __init__(self, image_path: str):
         with open(image_path, "rb") as image_file:
             self.metadata = Image(image_file)
-        self.name = os.path.basename(image_file)
+        self.name = base_name_converter(image_path)
         image = cv2.imread(image_path)
         self.img_height, self.img_width = image.shape[:2]
         image = None
@@ -132,5 +134,9 @@ class ExifReader(object):
             # "focal_ratio": focal_ratio,
             "orientation": self.orientation,
             "capture_time": self.timestamp,
-            "gps": {"altitude": self.altitude, "latitude": self.latitude, "longitude": self.longitude},
+            "gps": {
+                "altitude": self.altitude,
+                "latitude": self.latitude,
+                "longitude": self.longitude,
+            },
         }

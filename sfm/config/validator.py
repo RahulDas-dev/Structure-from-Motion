@@ -17,9 +17,13 @@ def validate_userdefined_config(config_obj: Dict, re_start: bool = False) -> boo
         created_at = config_obj.get("created_at", None)
         exp_id = config_obj.get("exp_id", None)
         if created_at is None or exp_id is None:
-            raise Exception("Config_path should be point to old Config file, incase of restart")
+            raise Exception(
+                "Config_path should be point to old Config file, incase of restart"
+            )
         if exp_id.replace("SFM_EXPERIMENT_", "") != created_at:
-            raise Exception("Config_path should be point to old Config file, incase of restart")
+            raise Exception(
+                "Config_path should be point to old Config file, incase of restart"
+            )
 
     extension = config_obj.get("extension", None)
     default_extension = default_config.get("extension")
