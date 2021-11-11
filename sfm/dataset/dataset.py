@@ -4,6 +4,7 @@ from os import path
 from typing import Callable, List, Type, Union
 
 from sfm.dataset.data import Data
+from tqdm import tqdm
 
 
 class Dataset(object):
@@ -16,7 +17,7 @@ class Dataset(object):
 
     __slots__ = ("__extension", "__images", "__sorted", "__state")
 
-    def __init__(self, image_dir: List[str], extension: Union[str, List[str]]):
+    def __init__(self, image_dir: str, extension: Union[str, List[str]]):
         """Dataset Object Initialaztion.
 
         Populating __images from list of image present in image_dir with
@@ -29,13 +30,14 @@ class Dataset(object):
         else:
             self.__extension = [extension]
 
-        images = list(
-            filter(
-                lambda x: path.basename(x).split(".")[-1] in self.__extension,
-                os.listdir(image_dir),
-            )
-        )
-        self.__images = [Data(os.path.join(image_dir, file)) for file in images]
+        self.__images = []
+        for file in tqdm(os.listdir(image_dir), desc="Loading Images to Dataset "):
+            if os.path.basename(file).split(".")[-1] not in self.__extension:
+                continue
+            file = os.path.join(image_dir, file)
+            data = Data(file)
+            self.__images.append(data)
+
         self.__sorted = False
         self.__state = None
 
