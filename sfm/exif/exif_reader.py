@@ -113,13 +113,17 @@ class ExifReader(object):
     def latitude(self) -> float:
         if self.metadata.gps_latitude is None:
             return None
-        return self.decimal_coords(self.metadata.gps_latitude, self.metadata.gps_latitude_ref)
+        return self.decimal_coords(
+            self.metadata.gps_latitude, self.metadata.gps_latitude_ref
+        )
 
     @property
     def longitude(self) -> float:
         if self.metadata.gps_longitude is None:
             return None
-        return self.decimal_coords(self.metadata.gps_longitude, self.metadata.gps_longitude_ref)
+        return self.decimal_coords(
+            self.metadata.gps_longitude, self.metadata.gps_longitude_ref
+        )
 
     def data_as_dictonary(self) -> Dict:
         return {

@@ -58,7 +58,9 @@ class ExifExtractor(Component):
         dataset_size = len(dataset)
         for index in tqdm(range(dataset_size), desc="Exif Data Loading : "):
             data = dataset[index]
-            exif_data = list(filter(lambda x: x["name"] == data.basename, exif_data_list))[0]
+            exif_data = list(
+                filter(lambda x: x["name"] == data.basename, exif_data_list)
+            )[0]
             data.set_height_width(exif_data.img_height, exif_data.img_width)
             exif_data_list.remove(exif_data)
         time_elapsed = datetime.now() - start_time

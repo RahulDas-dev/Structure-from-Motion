@@ -47,7 +47,9 @@ class AppEngine:
         self.config.save_config()
         self.load_dataset()
         time_elapsed = datetime.now() - start_time
-        logger.info(f"Dataset Loading time (hh:mm:ss.ms) {time_elapsed} , Dataset Size {len(self.dataset)}")
+        logger.info(
+            f"Dataset Loading time (hh:mm:ss.ms) {time_elapsed} , Dataset Size {len(self.dataset)}"
+        )
         self.pipe_line_front_component.run(self.dataset)
         time_elapsed = datetime.now() - start_time
         logger.info(f"End to End Processing Time (hh:mm:ss.ms) {time_elapsed}")
