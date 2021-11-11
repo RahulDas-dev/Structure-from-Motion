@@ -1,0 +1,4 @@
+colorlog==6.6.0
+opencv_python==4.5.4.58
+tqdm==4.47.0
+exif==1.2.2
