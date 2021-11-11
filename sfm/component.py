@@ -1,5 +1,6 @@
 """Abstract Component class."""
 
+
 import os
 from abc import ABC, abstractmethod, abstractproperty
 from typing import Optional, Type
