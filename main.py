@@ -1,31 +1,49 @@
 """Main Function to SFM."""
 
-
-import logging
-
-from sfm.logformatter import ColoredFormatter
-
-logging.basicConfig(level=logging.NOTSET)
-logger = logging.getLogger(__name__)
-chenal = logging.StreamHandler()
-chenal.setLevel(logging.INFO)
-colorFormater = ColoredFormatter("[%(name)s][%(levelname)s]  %(message)s (%(filename)s:%(lineno)d)")
-chenal.setFormatter(colorFormater)
-logger.addHandler(chenal)
-
 import argparse
 import json
+import logging
+import os
 import sys
 import traceback
 from os import path
 
-from sfm.app_engine import AppEngine
+
+import colorlog
+
+from sfm.app import AppEngine
 from sfm.config.validator import validate_userdefined_config
 
-logger.setLevel(logging.DEBUG)
+
+def setup_logging():
+    root = logging.getLogger()
+    root.setLevel(logging.DEBUG)
+    format = "%(asctime)s:%(name)s - %(message)s"
+    date_format = "%H:%M:%S"
+    if "colorlog" in sys.modules and os.isatty(2):
+        cformat = "%(log_color)s" + format
+        formatter = colorlog.ColoredFormatter(
+            cformat,
+            date_format,
+            log_colors={
+                "DEBUG": "cyan",
+                "INFO": "green",
+                "WARNING": "yellow",
+                "ERROR": "red",
+                "CRITICAL": "red,bg_white",
+            },
+            style="%",
+        )
+    else:
+        formatter = logging.Formatter(format, date_format)
+    chenal = logging.StreamHandler()
+    chenal.setFormatter(formatter)
+    root.addHandler(chenal)
 
 
 if __name__ == "__main__":
+    setup_logging()
+    loggger = logging.getLogger(__name__)
     try:
         parser = argparse.ArgumentParser(
             prog="main.py", usage="%(prog)s [options]", description="""Process SFM on Given Configuration"""
