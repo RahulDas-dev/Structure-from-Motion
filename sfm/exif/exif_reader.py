@@ -124,6 +124,8 @@ class ExifReader(object):
             "file": self.name,
             "make": self.make,
             "model": self.model,
+            "img_height": self.img_height,
+            "img_width": self.img_width,
             "width": self.width,
             "height": self.height,
             # "projection_type": projection_type,

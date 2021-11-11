@@ -1,6 +1,6 @@
 {
-  "dataset_path": "C:/Users/admin/Desktop/codespace/python/Dna_image/images/result/gray",
-  "output_path": "C:/Users/admin/Desktop/codespace/python/output_sfm",
+  "dataset_path": "/mnt/sfm/Structure-from-Motion/dataset/box",
+  "output_path": "/mnt/sfm/sfmout",
   "extension": "jpeg",
   "feature_type": "SIFT"
 }

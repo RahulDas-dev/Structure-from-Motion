@@ -1,13 +1,29 @@
 """Main Function to SFM."""
 
 
+import logging
+
+from sfm.logformatter import ColoredFormatter
+
+logging.basicConfig(level=logging.NOTSET)
+logger = logging.getLogger(__name__)
+chenal = logging.StreamHandler()
+chenal.setLevel(logging.INFO)
+colorFormater = ColoredFormatter("[%(name)s][%(levelname)s]  %(message)s (%(filename)s:%(lineno)d)")
+chenal.setFormatter(colorFormater)
+logger.addHandler(chenal)
+
 import argparse
 import json
 import sys
 import traceback
 from os import path
 
+from sfm.app_engine import AppEngine
 from sfm.config.validator import validate_userdefined_config
+
+logger.setLevel(logging.DEBUG)
+
 
 if __name__ == "__main__":
     try:
@@ -37,6 +53,9 @@ if __name__ == "__main__":
 
         if validate_userdefined_config(userConfig, re_start) is not True:
             raise Exception("User Defind config File is not Valid")
+
+        app_engine = AppEngine(userConfig, re_start)
+        app_engine.bootstrap()
 
     except BaseException:
         traceback.print_exc()

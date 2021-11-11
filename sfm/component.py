@@ -34,6 +34,8 @@ class Component(ABC):
     def run(self, dataset: Type[Dataset]):
         if self.iscompleted(len(dataset)) is False:
             self.move_forward(dataset)
+        if self.iscompleted(len(dataset)) is True:
+            self.reload(dataset)
         if self.__chainable:
             self.next_component().run(dataset)
 
@@ -43,6 +45,10 @@ class Component(ABC):
 
     @abstractmethod
     def move_forward(self, dataset: Type[Dataset]):
+        pass
+
+    @abstractmethod
+    def reload(self, dataset: Type[Dataset]):
         pass
 
     @property

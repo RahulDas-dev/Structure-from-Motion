@@ -42,6 +42,9 @@ class TestComponent(unittest.TestCase):
             def move_forward(self):
                 print("running the Mycomponnet")
 
+            def reload(self, dataset):
+                print("reload")
+
             @property
             def next_component(self):
                 return 1
@@ -52,8 +55,8 @@ class TestComponent(unittest.TestCase):
 
         comp = Mycompent("EXIF_EXTRACTION")
 
-        self.assertEqual(comp.output_directory_path, os.path.join(helper.OUTPUT_PATH, "exif_data"))
-        self.assertTrue(os.path.isdir(comp.output_directory_path))
+        self.assertEqual(comp.output_directory_path, helper.OUTPUT_PATH)
+        # self.assertTrue(os.path.isdir(comp.output_directory_path))
 
 
 if __name__ == "__main__":
