@@ -1,6 +1,6 @@
 import os
 from itertools import combinations
-from typing import Callable, ClassVar, List, Type, Union
+from typing import Callable, List, Optional, Union
 
 from sfm.dataset.data import Data
 from tqdm import tqdm
@@ -9,10 +9,10 @@ from tqdm import tqdm
 class Dataset(object):
     """Data Set Loader."""
 
-    __extension: ClassVar[List[str]]
-    __images: ClassVar[List[Type[Data]]]
-    __sorted: ClassVar[bool]
-    __state: ClassVar[str]
+    __extension: List[str]
+    __images: List[Data]
+    __sorted: bool
+    __state: Optional[str]
 
     __slots__ = ("__extension", "__images", "__sorted", "__state")
 
@@ -49,7 +49,7 @@ class Dataset(object):
         return self.__sorted
 
     @property
-    def state(self) -> bool:
+    def state(self) -> Optional[str]:
         return self.__state
 
     def sortImages(self, sortfunc: Callable[[str], Union[int, float]]):
@@ -57,7 +57,7 @@ class Dataset(object):
         self.__images.sort(key=sortfunc)
         self.__sorted = True
 
-    def __getitem__(self, index: int) -> str:
+    def __getitem__(self, index: int) -> Data:
         return self.__images[index]
 
     def getPairs(self) -> List[str]:

@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 class ExifExtractor(Component):
     """EXID data Extraction from Images."""
 
-    def __init__(self, chainable=False):
+    def __init__(self, chainable: bool = False):
         super().__init__("EXIF_EXTRACTION", chainable=chainable)
 
     @lru_cache(maxsize=16)
@@ -34,9 +34,9 @@ class ExifExtractor(Component):
     def output_path(self) -> str:
         return os.path.join(self.output_directory_path, self.output_file)
 
-    def move_forward(self, dataset: Type[Dataset]):
+    def move_forward(self, dataset: Dataset):
         start_time = datetime.now()
-        dataset_size = len(dataset)
+        dataset_size: int = len(dataset)
         exif_data_list = []
         for index in tqdm(range(dataset_size), desc="Exif Extraction : "):
             data = dataset[index]
@@ -50,12 +50,12 @@ class ExifExtractor(Component):
         time_elapsed = datetime.now() - start_time
         logger.info(f"Exif Extraction Time (hh:mm:ss.ms) {time_elapsed}")
 
-    def reload(self, dataset: Type[Dataset]):
+    def reload(self, dataset: Dataset):
         start_time = datetime.now()
         exif_data_list = []
         with open(self.output_path) as meta_data_file:
             exif_data_list = json.load(meta_data_file)
-        dataset_size = len(dataset)
+        dataset_size: int = len(dataset)
         for index in tqdm(range(dataset_size), desc="Exif Data Loading : "):
             data = dataset[index]
             exif_data = list(

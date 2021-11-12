@@ -3,7 +3,7 @@
 
 import logging
 from datetime import datetime
-from typing import ClassVar, Dict
+from typing import Dict, Union
 
 from sfm.component import Component
 from sfm.config.config import Config
@@ -15,15 +15,19 @@ logger = logging.getLogger(__name__)
 
 class AppEngine:
 
-    config: ClassVar[Config]
-    restart: ClassVar[bool]
-    dataset: ClassVar[Dataset]
-    pipe_line_front_component: ClassVar[Component]
+    config: Config
+    restart: bool
+    dataset: Dataset
+    pipe_line_front_component: Component
 
-    def __init__(self, config_obj: Dict, re_start: bool = False):
+    def __init__(
+        self,
+        config_obj: Dict[str, Union[str, int, float, bool]],
+        re_start: bool = False,
+    ):
         self.config = Config(config_obj, re_start)
         self.restart = re_start
-        self.dataset = None
+        # self.dataset = None
         self.display_info()
         self.build_pipe_line()
 

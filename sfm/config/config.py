@@ -4,18 +4,16 @@
 import json
 import os
 from datetime import datetime
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Any, ClassVar, Dict, List, Optional, Tuple, Union
 
 from sfm.config.default_config import config as default_config
 from sfm.state import APP_STATE_DETAILS
-
-# from sfm.utility.singleton_decorator import singleton
 
 
 class Config(object):
     """Config Class Defination."""
 
-    __instance = None
+    __instance: ClassVar = None
 
     # __state_details: Dict
 
@@ -31,7 +29,11 @@ class Config(object):
         """Static access method."""
         Config.__instance = None
 
-    def __init__(self, config_obj: Dict, re_start: bool = False):
+    def __init__(
+        self,
+        config_obj: Dict[str, Any],
+        re_start: bool = False,
+    ):
         """Config Object Initialaztion.
 
         default config and User defined config will be merged
@@ -53,7 +55,7 @@ class Config(object):
 
     def save_config(self):
         """Saving the config file for Future use, in output_path."""
-        output_path = self.__config.get("output_path")
+        output_path: str = self.__config.get("output_path")
         with open(os.path.join(output_path, "config.json"), "w") as confilg_file:
             json.dump(self.__config, confilg_file, indent=4, sort_keys=True)
 
@@ -98,8 +100,8 @@ class Config(object):
         statedict = list(filter(lambda x: x["name"] == state_name, APP_STATE_DETAILS))[
             0
         ]
-        subdir = statedict.get("subdir", None)
-        filename = statedict.get("file", None)
+        subdir: Optional[str] = statedict.get("subdir", None)
+        filename: Optional[str] = statedict.get("file", None)
         if filename is not None:
             return (self.output_path, filename)
         else:

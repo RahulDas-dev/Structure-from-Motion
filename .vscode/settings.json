@@ -26,4 +26,5 @@
         "--profile",
         "black"
     ],
+    "python.pythonPath": "/usr/bin/python3",
 }

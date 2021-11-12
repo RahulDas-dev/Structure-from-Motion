@@ -3,7 +3,7 @@
 
 import logging
 from datetime import datetime, timedelta
-from typing import ClassVar, Dict, Optional, Tuple
+from typing import Dict, Optional, Tuple
 
 import cv2
 from sfm.utility.helper import base_name_converter
@@ -16,10 +16,10 @@ logger = logging.getLogger(__name__)
 class ExifReader(object):
     """Module Reads Exif Data."""
 
-    metadata: ClassVar[Dict]
-    img_height: ClassVar[int]
-    img_width: ClassVar[int]
-    name: ClassVar[str]
+    metadata: Dict[str, str]
+    img_height: int
+    img_width: int
+    name: str
 
     def __init__(self, image_path: str):
         with open(image_path, "rb") as image_file:
