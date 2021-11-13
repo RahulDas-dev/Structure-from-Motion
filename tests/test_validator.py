@@ -2,9 +2,10 @@
 
 import unittest
 from datetime import datetime
-from test import helper
 
 from sfm.config.validator import validate_userdefined_config
+
+from tests import helper
 
 
 def setUpModule():

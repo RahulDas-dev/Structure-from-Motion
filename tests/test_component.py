@@ -1,10 +1,11 @@
 """Unittesting for abstract Class component,"""
 import os
 import unittest
-from test import helper
 
 from sfm.component import Component
 from sfm.config.config import Config
+
+from tests import helper
 
 
 def setUpModule():
