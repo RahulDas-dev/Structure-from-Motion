@@ -1,4 +1,5 @@
 import os
+from functools import lru_cache
 from itertools import combinations
 from typing import Callable, List, Optional, Union
 
@@ -40,7 +41,9 @@ class Dataset(object):
         self.__sorted = False
         self.__state = None
 
-    def __len__(self) -> int:
+    @property
+    @lru_cache(maxsize=64)
+    def image_count(self) -> int:
         """Returns the count of images."""
         return len(self.__images)
 
@@ -66,3 +69,8 @@ class Dataset(object):
     @property
     def getImagesList(self) -> List[str]:
         return list(map(lambda x: x.name, self.__images))
+
+    @property
+    @lru_cache(maxsize=64)
+    def average_image_size(self) -> int:
+        return sum([item.image_size for item in self.__images]) / self.image_count

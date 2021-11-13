@@ -41,9 +41,9 @@ class Component(ABC):
         return self.__config
 
     def run(self, dataset: Dataset):
-        if self.iscompleted(len(dataset)) is False:
+        if self.iscompleted(dataset.image_count) is False:
             self.move_forward(dataset)
-        if self.iscompleted(len(dataset)) is True:
+        if self.iscompleted(dataset.image_count) is True:
             self.reload(dataset)
         if self.__chainable:
             if isinstance(self.__next_component, Component):

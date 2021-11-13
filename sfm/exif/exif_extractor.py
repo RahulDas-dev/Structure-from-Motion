@@ -5,7 +5,6 @@ import logging
 import os
 from datetime import datetime
 from functools import lru_cache
-from typing import Type
 
 from sfm.component import Component
 from sfm.dataset.dataset import Dataset
@@ -36,14 +35,12 @@ class ExifExtractor(Component):
 
     def move_forward(self, dataset: Dataset):
         start_time = datetime.now()
-        dataset_size: int = len(dataset)
         exif_data_list = []
-        for index in tqdm(range(dataset_size), desc="Exif Extraction : "):
+        for index in tqdm(range(dataset.image_count), desc="Exif Extraction : "):
             data = dataset[index]
             exif_data = ExifReader(data.name)
             if exif_data.has_exif_metadat is not True:
                 continue
-            data.set_height_width(exif_data.img_height, exif_data.img_width)
             exif_data_list.append(exif_data.data_as_dictonary())
         with open(self.output_path, "w") as meta_data_file:
             json.dump(exif_data_list, meta_data_file, indent=4)
@@ -55,13 +52,12 @@ class ExifExtractor(Component):
         exif_data_list = []
         with open(self.output_path) as meta_data_file:
             exif_data_list = json.load(meta_data_file)
-        dataset_size: int = len(dataset)
-        for index in tqdm(range(dataset_size), desc="Exif Data Loading : "):
+        for index in tqdm(range(dataset.image_count), desc="Exif Data Loading : "):
             data = dataset[index]
             exif_data = list(
                 filter(lambda x: x["name"] == data.basename, exif_data_list)
             )[0]
-            data.set_height_width(exif_data.img_height, exif_data.img_width)
+            # data.set_height_width(exif_data.img_height, exif_data.img_width)
             exif_data_list.remove(exif_data)
         time_elapsed = datetime.now() - start_time
         logger.info(f"Exif data Loading Time (hh:mm:ss.ms) {time_elapsed}")

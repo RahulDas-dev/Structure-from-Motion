@@ -52,7 +52,7 @@ class AppEngine:
         self.load_dataset()
         time_elapsed = datetime.now() - start_time
         logger.info(
-            f"Dataset Loading time (hh:mm:ss.ms) {time_elapsed} , Dataset Size {len(self.dataset)}"
+            f"Dataset Loading time (hh:mm:ss.ms) {time_elapsed} , Dataset Size {self.dataset.image_count}"
         )
         self.pipe_line_front_component.run(self.dataset)
         time_elapsed = datetime.now() - start_time

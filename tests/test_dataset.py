@@ -4,6 +4,7 @@ import os
 import unittest
 from random import shuffle
 
+import cv2
 from sfm.dataset.dataset import Dataset
 
 from tests.helper import (
@@ -43,25 +44,26 @@ class TestDatsetObject(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.extension = ["jpg", "png", "PNG", "jpeg"]
+        cls.dataset = Dataset(DATASET_PATH, cls.extension)
 
-    def setUp(self) -> None:
-        super().setUp()
-        self.dataset = Dataset(DATASET_PATH, self.extension)
+    @classmethod
+    def tearDownClass(cls):
+        cls.dataset = None
 
-    def teardown(self):
-        self.dataset = None
-
-    def test_length(self):
+    def test_image_count(self):
         images = [
             file
             for file in os.listdir(DATASET_PATH)
             if os.path.basename(file).split(".")[-1] in self.extension
         ]
-        self.assertEqual(len(self.dataset), len(images))
+        self.assertEqual(self.dataset.image_count, len(images))
 
     def test_getItem(self):
         allFilesvalid = all(
-            [os.path.exists(self.dataset[i].name) for i in range(len(self.dataset))]
+            [
+                os.path.exists(self.dataset[i].name)
+                for i in range(self.dataset.image_count)
+            ]
         )
         self.assertEqual(allFilesvalid, True)
 
@@ -80,6 +82,14 @@ class TestDatsetObject(unittest.TestCase):
         self.dataset.sortImages(sortFunction1)
         self.assertListEqual(images, self.dataset.getImagesList)
         self.assertTrue(self.dataset.isSorted)
+
+    def test_image_size(self):
+        random_item = self.dataset[2]
+        image = cv2.imread(random_item.name)
+        height, width = image.shape[:2]
+        channel = 1 if image.ndim == 2 else image.shape[-1]
+        size = int((height * width * channel) / (1024 * 1024))
+        self.assertEqual(self.dataset[2].image_size, size)
 
 
 if __name__ == "__main__":

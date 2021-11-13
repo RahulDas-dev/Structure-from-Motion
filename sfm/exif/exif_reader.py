@@ -5,7 +5,6 @@ import logging
 from datetime import datetime, timedelta
 from typing import Dict, Optional, Tuple
 
-import cv2
 from sfm.utility.helper import base_name_converter
 
 from exif import Image
@@ -17,17 +16,12 @@ class ExifReader(object):
     """Module Reads Exif Data."""
 
     metadata: Dict[str, str]
-    img_height: int
-    img_width: int
     name: str
 
     def __init__(self, image_path: str):
         with open(image_path, "rb") as image_file:
             self.metadata = Image(image_file)
         self.name = base_name_converter(image_path)
-        image = cv2.imread(image_path)
-        self.img_height, self.img_width = image.shape[:2]
-        image = None
 
     @property
     def has_exif_metadat(self) -> bool:
@@ -39,11 +33,11 @@ class ExifReader(object):
 
     @property
     def height(self) -> int:
-        return self.metadata.get("image_height", self.img_height)
+        return self.metadata.get("image_height", -1)
 
     @property
     def width(self) -> int:
-        return self.metadata.get("image_width", self.img_width)
+        return self.metadata.get("image_width", -1)
 
     @property
     def make(self) -> bool:
@@ -130,8 +124,6 @@ class ExifReader(object):
             "file": self.name,
             "make": self.make,
             "model": self.model,
-            "img_height": self.img_height,
-            "img_width": self.img_width,
             "width": self.width,
             "height": self.height,
             # "projection_type": projection_type,

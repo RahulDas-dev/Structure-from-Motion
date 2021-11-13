@@ -1,9 +1,13 @@
 """Module Defines Data object."""
 
+import logging
 import os
 from typing import Optional
 
+import cv2
 from sfm.utility.helper import base_name_converter
+
+logger = logging.getLogger(__name__)
 
 
 class Data(object):
@@ -12,13 +16,15 @@ class Data(object):
     __name: str
     __height: int
     __width: int
+    __channel: int
 
-    __slots__ = ("__name", "__height", "__width")
+    __slots__ = ("__name", "__height", "__width", "__channel")
 
-    def __init__(self, name: str, height: int = -1, width: int = -1):
+    def __init__(self, name: str):
         self.__name = name
-        self.__height = height
-        self.__width = width
+        image = cv2.imread(name)
+        self.__height, self.__width = image.shape[:2]
+        self.__channel = 1 if image.ndim == 2 else image.shape[-1]
 
     @property
     def name(self) -> str:
@@ -40,16 +46,6 @@ class Data(object):
     def width(self) -> int:
         return self.__width
 
-    def set_height_width(self, height: int = -1, width: int = -1):
-        self.__height = height
-        self.__width = width
-
     @property
-    def isDimessionSet(self):
-        return True if self.height > 0 and self.width > 0 else False
-
-    @property
-    def size(self) -> Optional[int]:
-        if self.__height == -1 and self.__width == -1:
-            return None
-        return (self.__height * self.__width * 4) / (1024 * 1024)
+    def image_size(self) -> int:
+        return int((self.__height * self.__width * self.__channel) / (1024 * 1024))
