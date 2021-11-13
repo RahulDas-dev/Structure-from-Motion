@@ -8,6 +8,7 @@ exif = "*"
 tqdm = "*"
 opencv-python = "*"
 psutil = "*"
+colorlog = "*"
 
 [dev-packages]
 black = "*"

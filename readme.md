@@ -2,11 +2,11 @@
 
 #### Run test command
 
-    `python3 -m unittest -v`
+    `pipenv run python -m unittest -v`
 
 #### clean command
 
-    `py3clean .`
+    `pipenv lock --clear.`
 
 #### Linting command
 
@@ -14,6 +14,6 @@
 
 #### Run Whole Module command
 
-    `python3 main.py --config config.json `
+    `pipenv run python main.py --config config.json `
 
 #### Dataset Details
