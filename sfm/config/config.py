@@ -40,9 +40,7 @@ class Config(object):
         """
         if Config.__instance is not None:
             print(Config.__instance)
-            raise Exception(
-                "Config Class has been instantiated, kindly use Instance Method"
-            )
+            raise Exception("Config Class has been instantiated, kindly use Instance Method")
         if re_start:
             self.__config = config_obj
         else:
@@ -89,17 +87,31 @@ class Config(object):
         """Returns the image Local Feature Extractor Type."""
         return self.__config.get("feature_type")
 
+    @property
+    def max_keypoint_cont(self) -> int:
+        """Returns the max_keypoint_cont."""
+        return int(self.__config.get("max_keypoint_cont"))
+
+    @property
+    def sift_edge_threshold(self) -> int:
+        """Returns the sift_edge_threshold."""
+        return int(self.__config.get("sift_edge_threshold"))
+
+    @property
+    def sift_peak_threshold(self) -> float:
+        """Returns the sift_peak_threshold."""
+        return float(self.__config.get("sift_peak_threshold"))
+
     @staticmethod
     def valid_state_names() -> List[str]:
         """Returns the list if of Statenames."""
         return list(map(lambda x: x["name"], APP_STATE_DETAILS))
 
     def sub_directory_path(self, state_name: str) -> Tuple[str, Optional[str]]:
+        """Determine Subdirectory Path for Given State."""
         if state_name not in self.valid_state_names():
             raise ValueError(f"State {state_name} is not valid")
-        statedict = list(filter(lambda x: x["name"] == state_name, APP_STATE_DETAILS))[
-            0
-        ]
+        statedict = list(filter(lambda x: x["name"] == state_name, APP_STATE_DETAILS))[0]
         subdir: Optional[str] = statedict.get("subdir", None)
         filename: Optional[str] = statedict.get("file", None)
         if filename is not None:

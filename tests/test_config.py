@@ -1,6 +1,5 @@
 """Unittesting Module for Config Class."""
 import unittest
-from os import pardir, path
 
 from sfm.config.config import Config
 from sfm.config.default_config import config as default_config
@@ -46,9 +45,7 @@ class TestConfigWithNoRestart(unittest.TestCase):
         )
         self.assertEqual(self.config.dataset_path, helper.DATASET_PATH)
         self.assertEqual(self.config.output_path, helper.OUTPUT_PATH)
-        self.assertEqual(
-            self.config.feature_extractor, default_config.get("feature_type", None)
-        )
+        self.assertEqual(self.config.feature_extractor, default_config.get("feature_type", None))
 
     def test_state_sub_directory_path(self):
         """Testing State sub_directory_path."""
@@ -56,9 +53,7 @@ class TestConfigWithNoRestart(unittest.TestCase):
             self.config.valid_state_names(),
             ["EXIF_EXTRACTION", "FEATURE_EXTRACTION", "MATCHING_FEATURE"],
         )
-        subdir_exif = list(
-            filter(lambda x: x["name"] == "EXIF_EXTRACTION", APP_STATE_DETAILS)
-        )[0].get("subdir", None)
+        subdir_exif = list(filter(lambda x: x["name"] == "EXIF_EXTRACTION", APP_STATE_DETAILS))[0].get("subdir", None)
         subdir = self.config.sub_directory_path("EXIF_EXTRACTION")[0]
         # output_dir = path.abspath(path.join(subdir, pardir))
         self.assertEqual(subdir, helper.OUTPUT_PATH)
@@ -144,9 +139,7 @@ class TestConfigSingletone(unittest.TestCase):
         }
         with self.assertRaises(Exception) as context:
             _ = Config.getInstance()
-        self.assertEqual(
-            "Config Class Has not been instantiated", str(context.exception)
-        )
+        self.assertEqual("Config Class Has not been instantiated", str(context.exception))
 
 
 if __name__ == "__main__":

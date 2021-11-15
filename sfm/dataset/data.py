@@ -2,7 +2,6 @@
 
 import logging
 import os
-from typing import Optional
 
 import cv2
 from sfm.utility.helper import base_name_converter
@@ -28,24 +27,30 @@ class Data(object):
 
     @property
     def name(self) -> str:
+        """Returns absolute path of image."""
         return self.__name
 
     @property
     def basename(self) -> str:
+        """Returns name of the without extension."""
         return base_name_converter(self.__name)
 
     @property
     def extension(self) -> str:
+        """Returns extension of image."""
         return os.path.basename(self.__name).split(".")[-1]
 
     @property
     def height(self) -> int:
+        """Returns image height."""
         return self.__height
 
     @property
     def width(self) -> int:
+        """Returns image width."""
         return self.__width
 
     @property
     def image_size(self) -> int:
+        """Returns image size in MB."""
         return int((self.__height * self.__width * self.__channel) / (1024 * 1024))

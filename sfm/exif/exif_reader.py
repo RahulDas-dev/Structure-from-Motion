@@ -33,18 +33,26 @@ class ExifReader(object):
 
     @property
     def height(self) -> int:
-        return self.metadata.get("image_height", -1)
+        if self.metadata.get("image_height", None) is not None:
+            return self.metadata.get("image_height")
+        return self.metadata.pixel_y_dimension
 
     @property
     def width(self) -> int:
-        return self.metadata.get("image_width", -1)
+        if self.metadata.get("image_width", None) is not None:
+            return self.metadata.get("image_height")
+        return self.metadata.pixel_x_dimension
 
     @property
-    def make(self) -> bool:
+    def make(self) -> str:
+        if self.metadata.make is not None:
+            return self.metadata.make
         return self.metadata.get("lens_make", None)
 
     @property
-    def model(self) -> bool:
+    def model(self) -> str:
+        if self.metadata.model is not None:
+            return self.metadata.model
         return self.metadata.get("lens_model", None)
 
     @property
@@ -107,17 +115,13 @@ class ExifReader(object):
     def latitude(self) -> float:
         if self.metadata.gps_latitude is None:
             return None
-        return self.decimal_coords(
-            self.metadata.gps_latitude, self.metadata.gps_latitude_ref
-        )
+        return self.decimal_coords(self.metadata.gps_latitude, self.metadata.gps_latitude_ref)
 
     @property
     def longitude(self) -> float:
         if self.metadata.gps_longitude is None:
             return None
-        return self.decimal_coords(
-            self.metadata.gps_longitude, self.metadata.gps_longitude_ref
-        )
+        return self.decimal_coords(self.metadata.gps_longitude, self.metadata.gps_longitude_ref)
 
     def data_as_dictonary(self) -> Dict:
         return {
