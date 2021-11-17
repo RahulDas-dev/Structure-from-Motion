@@ -8,7 +8,6 @@ import sys
 import traceback
 from os import path
 
-
 import colorlog
 
 from sfm.app import AppEngine
@@ -57,15 +56,8 @@ if __name__ == "__main__":
             action="store",
             help="absolute path of config.json",
         )
-        parser.add_argument(
-            "--re",
-            default=False,
-            dest="re_start",
-            action="store_true",
-            help="Set If want to restart",
-        )
         arguments = parser.parse_args()
-        config_path, re_start = arguments.config_path, arguments.re_start
+        config_path = arguments.config_path, arguments.re_start
 
         if config_path is None:
             raise ValueError("config_path can not be empty")
@@ -81,10 +73,10 @@ if __name__ == "__main__":
         with open(config_path) as file:
             userConfig = json.load(file)
 
-        if validate_userdefined_config(userConfig, re_start) is not True:
+        if validate_userdefined_config(userConfig) is not True:
             raise Exception("User Defind config File is not Valid")
 
-        app_engine = AppEngine(userConfig, re_start)
+        app_engine = AppEngine(userConfig)
         app_engine.bootstrap()
 
     except BaseException:

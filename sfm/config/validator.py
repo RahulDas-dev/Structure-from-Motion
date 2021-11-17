@@ -7,25 +7,11 @@ from typing import Any, Dict, List, Optional, Union
 from sfm.config.default_config import config as default_config
 
 
-def validate_userdefined_config(
-    config_obj: Dict[str, Any], re_start: bool = False
-) -> bool:
+def validate_userdefined_config(config_obj: Dict[str, Any]) -> bool:
     """Validates The user defined configuration."""
     #
     # Validation for Extension
     #
-
-    if re_start:
-        created_at: Optional[str] = config_obj.get("created_at", None)
-        exp_id: Optional[str] = config_obj.get("exp_id", None)
-        if created_at is None or exp_id is None:
-            raise Exception(
-                "Config_path should be point to old Config file, incase of restart"
-            )
-        if exp_id.replace("SFM_EXPERIMENT_", "") != created_at:
-            raise Exception(
-                "Config_path should be point to old Config file, incase of restart"
-            )
 
     extension: Optional[Union[str, List[str]]] = config_obj.get("extension", None)
     default_extension: List[str] = default_config.get("extension")
@@ -64,7 +50,7 @@ def validate_userdefined_config(
     if os.path.isdir(output_path) is not True:
         raise NotADirectoryError("output_path directory should be a valid")
 
-    if len(os.listdir(output_path)) > 0 and re_start is False:
+    if len(os.listdir(output_path)) > 0:
         raise IsADirectoryError("output_path directory is not empty")
 
     if os.access(output_path, os.W_OK) is not True:

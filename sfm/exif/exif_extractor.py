@@ -44,8 +44,7 @@ class ExifExtractor(Component):
             exif_data_list.append(exif_data.data_as_dictonary())
         with open(self.output_path, "w") as meta_data_file:
             json.dump(exif_data_list, meta_data_file, indent=4)
-        time_elapsed = datetime.now() - start_time
-        logger.info(f"Exif Extraction Time (hh:mm:ss.ms) {time_elapsed}")
+        logger.info(f"Exif Extraction Time (hh:mm:ss.ms) {datetime.now() - start_time}")
 
     def reload(self, dataset: Dataset):
         start_time = datetime.now()

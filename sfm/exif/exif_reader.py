@@ -25,20 +25,24 @@ class ExifReader(object):
 
     @property
     def has_exif_metadat(self) -> bool:
+        """Confirm Metadata Exists or not."""
         return self.metadata.has_exif
 
     @property
     def exif_version(self) -> str:
+        """Extracts Exif version."""
         return self.metadata.exif_version
 
     @property
     def height(self) -> int:
+        """Extracts Image height."""
         if self.metadata.get("image_height", None) is not None:
             return self.metadata.get("image_height")
         return self.metadata.pixel_y_dimension
 
     @property
     def width(self) -> int:
+        """Extracts Image width."""
         if self.metadata.get("image_width", None) is not None:
             return self.metadata.get("image_height")
         return self.metadata.pixel_x_dimension
@@ -62,6 +66,7 @@ class ExifReader(object):
 
     @property
     def timestamp(self):
+        """Extracts Image timestamp."""
         if self.metadata.datetime_original is not None:
             return self.__format_date_time(
                 self.metadata.datetime_original,
@@ -95,14 +100,16 @@ class ExifReader(object):
         return (datetime_dt - datetime(1970, 1, 1)).total_seconds()
 
     @property
-    def altitude(self) -> float:
-        if self.metadata.gps_altitude is None:
-            return None
-        if self.metadata.gps_altitude_ref is None:
+    def altitude(self) -> Optional[float]:
+        if self.metadata.gps_altitude is not None:
             return self.metadata.gps_altitude
-        if self.metadata.gps_altitude_ref == 1:
-            return -self.metadata.gps_altitude
-        return self.metadata.gps_altitude
+        return self.metadata.get("gps_altitude", None)
+
+    @property
+    def altitude_ref(self) -> Optional[float]:
+        if self.metadata.gps_altitude_ref is not None:
+            return self.metadata.gps_altitude_ref
+        return self.metadata.get("gps_altitude_ref", None)
 
     @staticmethod
     def decimal_coords(coords: Tuple[float, float, float], ref: Optional[str]) -> float:
@@ -112,20 +119,41 @@ class ExifReader(object):
         return decimal_degrees
 
     @property
-    def latitude(self) -> float:
-        if self.metadata.gps_latitude is None:
-            return None
-        return self.decimal_coords(self.metadata.gps_latitude, self.metadata.gps_latitude_ref)
+    def latitude(self) -> Optional[Tuple[float, float, float]]:
+        """Extracts GPS Latitude."""
+        if self.metadata.gps_latitude is not None:
+            return self.metadata.gps_latitude
+        return self.metadata.get("gps_latitude", None)
 
     @property
-    def longitude(self) -> float:
-        if self.metadata.gps_longitude is None:
-            return None
-        return self.decimal_coords(self.metadata.gps_longitude, self.metadata.gps_longitude_ref)
+    def latitude_ref(self) -> Optional[str]:
+        """Extracts GPS Latitude referance."""
+        if self.metadata.gps_latitude_ref is not None:
+            return self.metadata.gps_latitude_ref
+        return self.metadata.get("gps_latitude_ref", None)
+
+    @property
+    def longitude(self) -> Optional[Tuple[float, float, float]]:
+        """Extracts GPS Longitude."""
+        if self.metadata.gps_longitude is not None:
+            return self.metadata.gps_longitude
+        return self.metadata.get("gps_longitude", None)
+
+    @property
+    def longitude_ref(self) -> Optional[str]:
+        """Extracts GPS Longitude referance."""
+        if self.metadata.gps_longitude_ref is not None:
+            return self.metadata.gps_longitude_ref
+        return self.metadata.get("gps_longitude_ref", None)
+
+    @property
+    def dop(self) -> Optional[str]:
+        return self.metadata.get("gps_dop", None)
 
     def data_as_dictonary(self) -> Dict:
         return {
             "file": self.name,
+            "exif_version": self.exif_version,
             "make": self.make,
             "model": self.model,
             "width": self.width,
@@ -136,7 +164,11 @@ class ExifReader(object):
             "capture_time": self.timestamp,
             "gps": {
                 "altitude": self.altitude,
+                "altitude_ref": self.altitude_ref,
                 "latitude": self.latitude,
+                "latitude_ref": self.latitude_ref,
                 "longitude": self.longitude,
+                "longitude_ref": self.longitude_ref,
+                "dop": self.dop,
             },
         }

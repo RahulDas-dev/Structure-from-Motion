@@ -1,7 +1,6 @@
 """Unittesting for Validator Module."""
 
 import unittest
-from datetime import datetime
 
 from sfm.config.validator import validate_userdefined_config
 
@@ -45,9 +44,7 @@ class TestValidatorFunction(unittest.TestCase):
         }
         with self.assertRaises(NotADirectoryError) as context:
             _ = validate_userdefined_config(config)
-        self.assertEqual(
-            "dataset_path directory should be a valid", str(context.exception)
-        )
+        self.assertEqual("dataset_path directory should be a valid", str(context.exception))
 
     def test_config_valid_dataset_dir_no_image(self):
         """Config Object with valid dataset_path but no image."""
@@ -59,9 +56,7 @@ class TestValidatorFunction(unittest.TestCase):
         helper.create_invalid_dataset_files()
         with self.assertRaises(FileNotFoundError) as context:
             _ = validate_userdefined_config(config)
-        self.assertEqual(
-            "dataset_path directory should contain image files", str(context.exception)
-        )
+        self.assertEqual("dataset_path directory should contain image files", str(context.exception))
 
     def test_config_none_out_dir(self):
         """Config Object with no output_path."""
@@ -86,9 +81,7 @@ class TestValidatorFunction(unittest.TestCase):
         }
         with self.assertRaises(NotADirectoryError) as context:
             _ = validate_userdefined_config(config)
-        self.assertEqual(
-            "output_path directory should be a valid", str(context.exception)
-        )
+        self.assertEqual("output_path directory should be a valid", str(context.exception))
 
     def test_config_with_non_empty_out_dir(self):
         """Config Object with valid non empty output_path."""
@@ -104,22 +97,6 @@ class TestValidatorFunction(unittest.TestCase):
             _ = validate_userdefined_config(config)
         self.assertEqual("output_path directory is not empty", str(context.exception))
 
-    def test_config_with_non_empty_out_dir_restart(self):
-        """Config Object with valid non empty output_path and restart enable."""
-        timestamp = datetime.now().strftime("%d-%m-%Y_%H:%M:%S")
-        config = {
-            "extension": ["PNG", "jpg"],
-            "dataset_path": helper.DATASET_PATH,
-            "output_path": helper.OUTPUT_PATH,
-            "created_at": timestamp,
-            "exp_id": f"SFM_EXPERIMENT_{timestamp}",
-        }
-        helper.create_valid_dataset_files()
-        helper.create_temp_output_dir()
-        helper.create_invalid_output_files()
-        valid = validate_userdefined_config(config, True)
-        self.assertTrue(valid)
-
     def test_config_with_out_dir_no_permission(self):
         """Config Object with valid output_path, but no Write Permission."""
         config = {
@@ -131,6 +108,4 @@ class TestValidatorFunction(unittest.TestCase):
         helper.create_temp_output_dir(False)
         with self.assertRaises(PermissionError) as context:
             _ = validate_userdefined_config(config)
-        self.assertEqual(
-            "output_path directory should be a Writable", str(context.exception)
-        )
+        self.assertEqual("output_path directory should be a Writable", str(context.exception))

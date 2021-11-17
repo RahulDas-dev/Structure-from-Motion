@@ -21,13 +21,8 @@ class AppEngine:
     dataset: Dataset
     pipe_line_front_component: Component
 
-    def __init__(
-        self,
-        config_obj: Dict[str, Union[str, int, float, bool]],
-        re_start: bool = False,
-    ):
-        self.config = Config(config_obj, re_start)
-        self.restart = re_start
+    def __init__(self, config_obj: Dict[str, Union[str, int, float, bool]]):
+        self.config = Config(config_obj)
         self.display_info()
         self.build_pipe_line()
 
@@ -44,7 +39,6 @@ class AppEngine:
         """Printing Config and Other info before running App."""
         logger.info("-------------- Config Details --------------")
         print(f"Experiment Name   : { self.config.experiment_id}")
-        print(f"Restart Flag      : { self.restart}")
         print(f"Dataset Directory : { self.config.dataset_path}")
         print(f"Output  Directory : { self.config.output_path}")
         print("--------------------------------------------------")

@@ -29,11 +29,7 @@ class Config(object):
         """Static access method."""
         Config.__instance = None
 
-    def __init__(
-        self,
-        config_obj: Dict[str, Any],
-        re_start: bool = False,
-    ):
+    def __init__(self, config_obj: Dict[str, Any]):
         """Config Object Initialaztion.
 
         default config and User defined config will be merged
@@ -41,13 +37,10 @@ class Config(object):
         if Config.__instance is not None:
             print(Config.__instance)
             raise Exception("Config Class has been instantiated, kindly use Instance Method")
-        if re_start:
-            self.__config = config_obj
-        else:
-            timestamp = datetime.now().strftime("%d-%m-%Y_%H:%M:%S")
-            config_obj["created_at"] = timestamp
-            config_obj["exp_id"] = f"SFM_EXPERIMENT_{timestamp}"
-            self.__config = {**default_config, **config_obj}
+        timestamp = datetime.now().strftime("%d-%m-%Y_%H:%M:%S")
+        config_obj["created_at"] = timestamp
+        config_obj["exp_id"] = f"SFM_EXPERIMENT_{timestamp}"
+        self.__config = {**default_config, **config_obj}
         # self.__state_details = APP_STATE_DETAILS
         Config.__instance = self
 
