@@ -1,5 +1,6 @@
-"""Unittesting for abstract Class component,"""
-import os
+"""Unittesting for abstract Class component."""
+
+
 import unittest
 
 from sfm.component import Component
