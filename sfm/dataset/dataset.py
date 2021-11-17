@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from functools import lru_cache
 from itertools import combinations
 from typing import Callable, List, Optional, Union
@@ -40,6 +41,13 @@ class Dataset(object):
 
         self.__sorted = False
         self.__state = None
+
+    def get_ubique_id(self):
+        """generates unique id."""
+        dttime = datetime.now().strftime("%Y%m%d")
+        index = 0
+        while True:
+            index += 1
 
     @property
     @lru_cache(maxsize=64)
