@@ -30,7 +30,9 @@ class SIFTExtractor(BaseFeatureExtractor):
             edgeThreshold=self.__edge_threshold, contrastThreshold=self.__peak_threshold
         )
         self.__max_keypoint_cont = config.max_keypoint_cont
-        logger.info(f"SIFT initilized with threshold {self.__edge_threshold}, {self.__peak_threshold}")
+        logger.info(
+            f"SIFT initilized with threshold {self.__edge_threshold}, {self.__peak_threshold}"
+        )
 
     @lru_cache(maxsize=16)
     def iscompleted(self, count: int) -> bool:
@@ -56,7 +58,9 @@ class SIFTExtractor(BaseFeatureExtractor):
             key_points_sorted = key_points[order, :]
             descriptor_sorted = descriptor[order, :]
             colors_sorted = self.extract_color(data.name, key_points_sorted)
-            self.save_features(data, key_points_sorted, descriptor_sorted, colors_sorted)
+            self.save_features(
+                data, key_points_sorted, descriptor_sorted, colors_sorted
+            )
         logger.info(f"SIFT Extraction Time (hh:mm:ss.ms) {datetime.now() - start_time}")
 
     def extract_features(self, imagePath: str) -> Tuple[np.ndarray, np.ndarray]:
@@ -65,10 +69,14 @@ class SIFTExtractor(BaseFeatureExtractor):
         self.reset_parameters()
         while True:
             self.__sift_object = cv2.SIFT_create(
-                edgeThreshold=self.__edge_threshold, contrastThreshold=self.__peak_threshold
+                edgeThreshold=self.__edge_threshold,
+                contrastThreshold=self.__peak_threshold,
             )
             key_points = self.__sift_object.detect(gray_image)
-            if len(key_points) < self.__max_keypoint_cont and self.__peak_threshold > 0.0001:
+            if (
+                len(key_points) < self.__max_keypoint_cont
+                and self.__peak_threshold > 0.0001
+            ):
                 self.__peak_threshold = (self.__peak_threshold * 2) / 3
             else:
                 break

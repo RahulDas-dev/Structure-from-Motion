@@ -36,7 +36,9 @@ class Config(object):
         """
         if Config.__instance is not None:
             print(Config.__instance)
-            raise Exception("Config Class has been instantiated, kindly use Instance Method")
+            raise Exception(
+                "Config Class has been instantiated, kindly use Instance Method"
+            )
         timestamp = datetime.now().strftime("%d-%m-%Y_%H:%M:%S")
         config_obj["created_at"] = timestamp
         config_obj["exp_id"] = f"SFM_EXPERIMENT_{timestamp}"
@@ -104,7 +106,9 @@ class Config(object):
         """Determine Subdirectory Path for Given State."""
         if state_name not in self.valid_state_names():
             raise ValueError(f"State {state_name} is not valid")
-        statedict = list(filter(lambda x: x["name"] == state_name, APP_STATE_DETAILS))[0]
+        statedict = list(filter(lambda x: x["name"] == state_name, APP_STATE_DETAILS))[
+            0
+        ]
         subdir: Optional[str] = statedict.get("subdir", None)
         filename: Optional[str] = statedict.get("file", None)
         if filename is not None:

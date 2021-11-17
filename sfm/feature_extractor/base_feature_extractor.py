@@ -46,10 +46,18 @@ class BaseFeatureExtractor(Component):
             colors = np.repeat(colors, 3).reshape((-1, 3))
         return colors
 
-    def save_features(self, data: Data, keypoints: np.ndarray, descriptor: np.ndarray, colors: np.ndarray):
+    def save_features(
+        self,
+        data: Data,
+        keypoints: np.ndarray,
+        descriptor: np.ndarray,
+        colors: np.ndarray,
+    ):
         """Save Images Key Point, Descriptor and Colors."""
         features = {"keypoint": keypoints, "descriptor": descriptor, "color": colors}
-        pickle_file_path = os.path.join(self.output_directory_path, f"{data.basename}.pickle")
+        pickle_file_path = os.path.join(
+            self.output_directory_path, f"{data.basename}.pickle"
+        )
         with open(pickle_file_path, mode="wb") as pkl_file:
             pickle.dump(features, pkl_file)
 

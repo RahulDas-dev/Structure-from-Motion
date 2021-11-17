@@ -44,7 +44,9 @@ class TestValidatorFunction(unittest.TestCase):
         }
         with self.assertRaises(NotADirectoryError) as context:
             _ = validate_userdefined_config(config)
-        self.assertEqual("dataset_path directory should be a valid", str(context.exception))
+        self.assertEqual(
+            "dataset_path directory should be a valid", str(context.exception)
+        )
 
     def test_config_valid_dataset_dir_no_image(self):
         """Config Object with valid dataset_path but no image."""
@@ -56,7 +58,9 @@ class TestValidatorFunction(unittest.TestCase):
         helper.create_invalid_dataset_files()
         with self.assertRaises(FileNotFoundError) as context:
             _ = validate_userdefined_config(config)
-        self.assertEqual("dataset_path directory should contain image files", str(context.exception))
+        self.assertEqual(
+            "dataset_path directory should contain image files", str(context.exception)
+        )
 
     def test_config_none_out_dir(self):
         """Config Object with no output_path."""
@@ -81,7 +85,9 @@ class TestValidatorFunction(unittest.TestCase):
         }
         with self.assertRaises(NotADirectoryError) as context:
             _ = validate_userdefined_config(config)
-        self.assertEqual("output_path directory should be a valid", str(context.exception))
+        self.assertEqual(
+            "output_path directory should be a valid", str(context.exception)
+        )
 
     def test_config_with_non_empty_out_dir(self):
         """Config Object with valid non empty output_path."""
@@ -108,4 +114,6 @@ class TestValidatorFunction(unittest.TestCase):
         helper.create_temp_output_dir(False)
         with self.assertRaises(PermissionError) as context:
             _ = validate_userdefined_config(config)
-        self.assertEqual("output_path directory should be a Writable", str(context.exception))
+        self.assertEqual(
+            "output_path directory should be a Writable", str(context.exception)
+        )

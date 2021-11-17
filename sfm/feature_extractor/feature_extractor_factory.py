@@ -4,7 +4,9 @@ from sfm.feature_extractor.base_feature_extractor import BaseFeatureExtractor
 from sfm.feature_extractor.sift_extractor import SIFTExtractor
 
 
-def feature_extractor_object(extractor_type: str, chainable: bool = False) -> BaseFeatureExtractor:
+def feature_extractor_object(
+    extractor_type: str, chainable: bool = False
+) -> BaseFeatureExtractor:
     if extractor_type == "SIFT":
         return SIFTExtractor(chainable)
     else:

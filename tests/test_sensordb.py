@@ -18,7 +18,11 @@ class TestSensorDB(unittest.TestCase):
     def test_search_db_with_singel_list(self):
         """Unit Testing get_sersor_dimension for list of item."""
         sensordb = SensorDB()
-        items = [("Xiaomi Redmi 3S 32GB", 4.69), ("AgfaPhoto Compact 103", 6.08), ("Acer CR-6530", 7.11)]
+        items = [
+            ("Xiaomi Redmi 3S 32GB", 4.69),
+            ("AgfaPhoto Compact 103", 6.08),
+            ("Acer CR-6530", 7.11),
+        ]
         query_list = list(map(lambda x: x[0], items))
         result = sensordb.get_sersor_dimension(query_list)
         self.assertEqual(len(result), 3)
@@ -37,7 +41,11 @@ class TestSensorDB(unittest.TestCase):
     def test_search_db_with_singel_list(self):
         """Unit Testing get_sersor_dimension for list of item + non existance item."""
         sensordb = SensorDB()
-        items = [("Xiaomi Redmi 3S 32GB", 4.69), ("Loose yourself", 6.08), ("Acer CR-6530", 7.11)]
+        items = [
+            ("Xiaomi Redmi 3S 32GB", 4.69),
+            ("Loose yourself", 6.08),
+            ("Acer CR-6530", 7.11),
+        ]
         query_list = list(map(lambda x: x[0], items))
         result = sensordb.get_sersor_dimension(query_list)
         self.assertEqual(len(result), 3)
