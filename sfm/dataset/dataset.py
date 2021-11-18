@@ -1,7 +1,6 @@
 import os
 from functools import lru_cache
-from itertools import combinations
-from typing import Callable, List, Optional, Union
+from typing import Callable, Dict, List, Optional, Union
 
 from sfm.dataset.data import Data
 from sfm.utility.helper import unique_id_generator
@@ -33,11 +32,13 @@ class Dataset(object):
 
         self.__images = []
         data_id_generator = unique_id_generator("IMAGE")
-        for file in tqdm(os.listdir(image_dir), desc="Loading Images to Dataset "):
-            if os.path.basename(file).split(".")[-1] not in self.__extension:
+        for image_path in tqdm(
+            os.listdir(image_dir), desc="Loading Images to Dataset "
+        ):
+            if os.path.basename(image_path).split(".")[-1] not in self.__extension:
                 continue
-            file = os.path.join(image_dir, file)
-            data = Data(file, next(data_id_generator))
+            image_path = os.path.join(image_dir, image_path)
+            data = Data(image_path, next(data_id_generator))
             self.__images.append(data)
 
         self.__sorted = False
@@ -65,9 +66,6 @@ class Dataset(object):
     def __getitem__(self, index: int) -> Data:
         return self.__images[index]
 
-    def getPairs(self) -> List[str]:
-        return combinations(self.__images, 2)
-
     @property
     def getImagesList(self) -> List[str]:
         return list(map(lambda x: x.name, self.__images))
@@ -76,3 +74,6 @@ class Dataset(object):
     @lru_cache(maxsize=64)
     def average_image_size(self) -> int:
         return sum([item.image_size for item in self.__images]) / self.image_count
+
+    def load_exif_information(self, exif_info: List[Dict]):
+        pass

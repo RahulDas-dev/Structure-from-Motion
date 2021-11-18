@@ -38,7 +38,7 @@ class ExifExtractor(Component):
         exif_data_list = []
         for index in tqdm(range(dataset.image_count), desc="Exif Extraction : "):
             data = dataset[index]
-            exif_data = ExifReader(data.name)
+            exif_data = ExifReader(data.name, data.unique_id)
             if exif_data.has_exif_metadat is not True:
                 continue
             exif_data_list.append(exif_data.data_as_dictonary())

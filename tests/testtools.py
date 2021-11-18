@@ -75,11 +75,14 @@ def clean_dataset_dir():
 def create_temp_output_dir(writeble=True):
     if os.path.exists(TEMP_TEST_DIR) is not True:
         os.makedirs(TEMP_TEST_DIR, 0o777 if writeble else 0o400)
+        # os.makedirs(TEMP_TEST_DIR)
     if os.path.exists(OUTPUT_PATH) is not True:
         os.mkdir(OUTPUT_PATH, 0o777 if writeble else 0o400)
+        # os.makedirs(TEMP_TEST_DIR)
     else:
         rmtree(OUTPUT_PATH)
         os.mkdir(OUTPUT_PATH, 0o777 if writeble else 0o400)
+        # os.makedirs(TEMP_TEST_DIR)
 
 
 def create_invalid_output_files():

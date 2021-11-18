@@ -115,13 +115,6 @@ class ExifReader(object):
             return self.__metadata.gps_altitude_ref
         return self.__metadata.get("gps_altitude_ref", None)
 
-    @staticmethod
-    def decimal_coords(coords: Tuple[float, float, float], ref: Optional[str]) -> float:
-        decimal_degrees = coords[0] + coords[1] / 60.0 + coords[2] / 3600.0
-        if ref == "S" or ref == "W":
-            decimal_degrees = -decimal_degrees
-        return decimal_degrees
-
     @property
     def latitude(self) -> Optional[Tuple[float, float, float]]:
         """Extracts GPS Latitude."""
@@ -156,7 +149,7 @@ class ExifReader(object):
 
     def data_as_dictonary(self) -> Dict:
         return {
-            "file": self.__name,
+            "file_basename": self.__name,
             "image_id": self.__unique_id,
             "exif_version": self.exif_version,
             "make": self.make,
@@ -167,13 +160,11 @@ class ExifReader(object):
             # "focal_ratio": focal_ratio,
             "orientation": self.orientation,
             "capture_time": self.timestamp,
-            "gps": {
-                "altitude": self.altitude,
-                "altitude_ref": self.altitude_ref,
-                "latitude": self.latitude,
-                "latitude_ref": self.latitude_ref,
-                "longitude": self.longitude,
-                "longitude_ref": self.longitude_ref,
-                "dop": self.dop,
-            },
+            "altitude": self.altitude,
+            "altitude_ref": self.altitude_ref,
+            "latitude": self.latitude,
+            "latitude_ref": self.latitude_ref,
+            "longitude": self.longitude,
+            "longitude_ref": self.longitude_ref,
+            "dop": self.dop,
         }

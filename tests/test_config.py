@@ -44,7 +44,9 @@ class TestConfigWithNoRestart(unittest.TestCase):
         )
         self.assertEqual(self.config.dataset_path, testtools.DATASET_PATH)
         self.assertEqual(self.config.output_path, testtools.OUTPUT_PATH)
-        self.assertEqual(self.config.feature_extractor, default_config.get("feature_type", None))
+        self.assertEqual(
+            self.config.feature_extractor, default_config.get("feature_type", None)
+        )
 
     def test_state_sub_directory_path(self):
         """Testing State sub_directory_path."""
@@ -133,7 +135,9 @@ class TestConfigSingletone(unittest.TestCase):
         """Config object should be created from get Instance method."""
         with self.assertRaises(Exception) as context:
             _ = Config.getInstance()
-        self.assertEqual("Config Class Has not been instantiated", str(context.exception))
+        self.assertEqual(
+            "Config Class Has not been instantiated", str(context.exception)
+        )
 
 
 if __name__ == "__main__":

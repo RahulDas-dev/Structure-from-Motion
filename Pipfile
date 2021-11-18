@@ -9,9 +9,10 @@ tqdm = "*"
 opencv-python = "*"
 psutil = "*"
 colorlog = "*"
+black = {extras = ["jupyter"], version = "*"}
 
 [dev-packages]
-black = "*"
+black = {extras = ["jupyter"], version = "*"}
 
 [requires]
 python_version = "3.9"

@@ -57,7 +57,7 @@ if __name__ == "__main__":
             help="absolute path of config.json",
         )
         arguments = parser.parse_args()
-        config_path = arguments.config_path, arguments.re_start
+        config_path = arguments.config_path
 
         if config_path is None:
             raise ValueError("config_path can not be empty")

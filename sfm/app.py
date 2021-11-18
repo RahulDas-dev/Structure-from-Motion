@@ -32,7 +32,9 @@ class AppEngine:
         Pipeline First Component --> ExifExtractor --> FeatureExtractor
         """
         self.pipe_line_front_component = ExifExtractor(chainable=True)
-        feature_extractor = feature_extractor_object(self.config.feature_extractor, chainable=False)
+        feature_extractor = feature_extractor_object(
+            self.config.feature_extractor, chainable=False
+        )
         self.pipe_line_front_component.set_next_component(feature_extractor)
 
     def display_info(self):
@@ -53,7 +55,9 @@ class AppEngine:
         self.config.save_config()
         self.load_dataset()
         time_elapsed = datetime.now() - start_time
-        logger.info(f"Dataset Loading time (hh:mm:ss.ms) {time_elapsed}, Dataset Size {self.dataset.image_count}")
+        logger.info(
+            f"Dataset Loading time (hh:mm:ss.ms) {time_elapsed}, Dataset Size {self.dataset.image_count}"
+        )
         self.pipe_line_front_component.run(self.dataset)
         time_elapsed = datetime.now() - start_time
         logger.info(f"End to End Processing Time (hh:mm:ss.ms) {time_elapsed}")
