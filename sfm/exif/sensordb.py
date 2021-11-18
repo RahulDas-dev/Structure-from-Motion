@@ -3,14 +3,13 @@
 
 import csv
 import os
-from functools import lru_cache
 from typing import ClassVar, List, Optional, Tuple, Union
 
 
 class SensorDB(object):
     """Sensordb Primaryly Load the  'sensordb.txt' file and Search the File to return sendor width."""
 
-    __db_path = os.path.join(
+    __db_path: ClassVar[str] = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "./sensordb.txt"
     )
 
@@ -30,7 +29,7 @@ class SensorDB(object):
             cls.__db_path = dbpath
 
     @staticmethod
-    def format_query(query: Union[Tuple[str], List[Tuple[str]]]) -> List[str]:
+    def format_query(query: Union[str, List[str]]) -> List[str]:
         """Converts query string to List , removes dulicate, then changes to lowercase."""
         if isinstance(query, list) is False:
             queryList = [query]
@@ -39,7 +38,9 @@ class SensorDB(object):
         return list(map(lambda x: x.lower(), queryList))
 
     @staticmethod
-    def format_result_to_original_case(query, result_in_lower_case):
+    def format_result_to_original_case(
+        query: Union[str, List[str]], result_in_lower_case: list[Tuple[str, float]]
+    ) -> list[Tuple[str, float]]:
         """Convert the result back to original case."""
         if isinstance(query, list) is False:
             queryList = [query]

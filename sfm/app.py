@@ -61,3 +61,4 @@ class AppEngine:
         self.pipe_line_front_component.run(self.dataset)
         time_elapsed = datetime.now() - start_time
         logger.info(f"End to End Processing Time (hh:mm:ss.ms) {time_elapsed}")
+        Config.disposeInstance()

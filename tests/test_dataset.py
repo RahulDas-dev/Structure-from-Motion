@@ -7,7 +7,7 @@ from random import shuffle
 import cv2
 from sfm.dataset.dataset import Dataset
 
-from tests.helper import (
+from tests.testtools import (
     DATASET_PATH,
     clean_dataset_dir,
     create_temp_test_dir,

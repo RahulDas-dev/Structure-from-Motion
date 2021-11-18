@@ -5,16 +5,16 @@ from sfm.config.config import Config
 from sfm.config.default_config import config as default_config
 from sfm.state import APP_STATE_DETAILS
 
-from tests import helper
+from tests import testtools
 
 
 def setUpModule():
-    helper.create_temp_test_dir()
+    testtools.create_temp_test_dir()
 
 
 def tearDownModule():
-    helper.clean_dataset_dir()
-    helper.delete_temp_test_dir()
+    testtools.clean_dataset_dir()
+    testtools.delete_temp_test_dir()
 
 
 class TestConfigWithNoRestart(unittest.TestCase):
@@ -24,15 +24,15 @@ class TestConfigWithNoRestart(unittest.TestCase):
     def setUpClass(cls):
         """This will create valid Datset dir and output path, and instantiate a config object."""
         config = {
-            "dataset_path": helper.DATASET_PATH,
-            "output_path": helper.OUTPUT_PATH,
+            "dataset_path": testtools.DATASET_PATH,
+            "output_path": testtools.OUTPUT_PATH,
         }
-        helper.create_temp_output_dir()
+        testtools.create_temp_output_dir()
         cls.config = Config(config)
 
     @classmethod
     def tearDownClass(cls):
-        helper.clean_dataset_dir()
+        testtools.clean_dataset_dir()
         cls.config.disposeInstance()
         cls.config = None
 
@@ -43,8 +43,8 @@ class TestConfigWithNoRestart(unittest.TestCase):
             default_config.get("extension", None),
             "extension value should be equal to Defauly",
         )
-        self.assertEqual(self.config.dataset_path, helper.DATASET_PATH)
-        self.assertEqual(self.config.output_path, helper.OUTPUT_PATH)
+        self.assertEqual(self.config.dataset_path, testtools.DATASET_PATH)
+        self.assertEqual(self.config.output_path, testtools.OUTPUT_PATH)
         self.assertEqual(
             self.config.feature_extractor, default_config.get("feature_type", None)
         )
@@ -60,7 +60,7 @@ class TestConfigWithNoRestart(unittest.TestCase):
         )[0].get("subdir", None)
         subdir = self.config.sub_directory_path("EXIF_EXTRACTION")[0]
         # output_dir = path.abspath(path.join(subdir, pardir))
-        self.assertEqual(subdir, helper.OUTPUT_PATH)
+        self.assertEqual(subdir, testtools.OUTPUT_PATH)
         # self.assertEqual(subdir, path.join(helper.OUTPUT_PATH, subdir_exif))
 
 
@@ -73,15 +73,15 @@ class TestConfigWithRestart(unittest.TestCase):
         config = {
             **default_config,
             **{
-                "dataset_path": helper.DATASET_PATH,
-                "output_path": helper.OUTPUT_PATH,
+                "dataset_path": testtools.DATASET_PATH,
+                "output_path": testtools.OUTPUT_PATH,
             },
         }
         cls.config = Config(config, True)
 
     @classmethod
     def tearDownClass(cls):
-        helper.clean_dataset_dir()
+        testtools.clean_dataset_dir()
         cls.config.disposeInstance()
         cls.config = None
 
@@ -93,19 +93,19 @@ class TestConfigSingletone(unittest.TestCase):
     def setUpClass(cls):
         """This will create valid Datset dir and output path, and instantiate a config object."""
 
-        helper.create_temp_output_dir()
+        testtools.create_temp_output_dir()
 
     @classmethod
     def tearDownClass(cls):
-        helper.clean_dataset_dir()
+        testtools.clean_dataset_dir()
 
     def test_getInstance_method(self):
         """Config object should be created from get Instance method."""
         config = {
             **default_config,
             **{
-                "dataset_path": helper.DATASET_PATH,
-                "output_path": helper.OUTPUT_PATH,
+                "dataset_path": testtools.DATASET_PATH,
+                "output_path": testtools.OUTPUT_PATH,
             },
         }
         cfg1 = Config(config)
@@ -119,8 +119,8 @@ class TestConfigSingletone(unittest.TestCase):
         config = {
             **default_config,
             **{
-                "dataset_path": helper.DATASET_PATH,
-                "output_path": helper.OUTPUT_PATH,
+                "dataset_path": testtools.DATASET_PATH,
+                "output_path": testtools.OUTPUT_PATH,
             },
         }
         cfg1 = Config(config)
@@ -137,8 +137,8 @@ class TestConfigSingletone(unittest.TestCase):
         config = {
             **default_config,
             **{
-                "dataset_path": helper.DATASET_PATH,
-                "output_path": helper.OUTPUT_PATH,
+                "dataset_path": testtools.DATASET_PATH,
+                "output_path": testtools.OUTPUT_PATH,
             },
         }
         with self.assertRaises(Exception) as context:

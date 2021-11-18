@@ -6,15 +6,15 @@ import unittest
 from sfm.component import Component
 from sfm.config.config import Config
 
-from tests import helper
+from tests import testtools
 
 
 def setUpModule():
-    helper.create_temp_test_dir()
+    testtools.create_temp_test_dir()
 
 
 def tearDownModule():
-    helper.delete_temp_test_dir()
+    testtools.delete_temp_test_dir()
     # pass
 
 
@@ -23,10 +23,10 @@ class TestComponent(unittest.TestCase):
     def setUpClass(cls):
         """This will create valid Datset dir and output path, and instantiate a config object."""
         config = {
-            "dataset_path": helper.DATASET_PATH,
-            "output_path": helper.OUTPUT_PATH,
+            "dataset_path": testtools.DATASET_PATH,
+            "output_path": testtools.OUTPUT_PATH,
         }
-        helper.create_temp_output_dir()
+        testtools.create_temp_output_dir()
         cls.config = Config(config)
 
     @classmethod
@@ -57,7 +57,7 @@ class TestComponent(unittest.TestCase):
 
         comp = Mycompent("EXIF_EXTRACTION")
 
-        self.assertEqual(comp.output_directory_path, helper.OUTPUT_PATH)
+        self.assertEqual(comp.output_directory_path, testtools.OUTPUT_PATH)
         # self.assertTrue(os.path.isdir(comp.output_directory_path))
 
 
