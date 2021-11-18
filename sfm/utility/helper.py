@@ -18,8 +18,8 @@ def calculate_avaiable_ram() -> int:
 
 def unique_id_generator(prefix: str) -> str:
     """Generates unique id, prefixed with  given argument."""
+    prefix = prefix if isinstance(prefix, str) else "SFM_ID_"
     index = 0
-    prefix = prefix.upper()
     while True:
         index = index + 1 if index < 999 else 1
         yield str(f"{prefix}{index:03d}")

@@ -16,11 +16,13 @@ class Data(object):
     __height: int
     __width: int
     __channel: int
+    __id: str
 
-    __slots__ = ("__name", "__height", "__width", "__channel")
+    __slots__ = ("__name", "__height", "__width", "__channel", "__id")
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, data_id: str):
         self.__name = name
+        self.__id = data_id
         image = cv2.imread(name)
         self.__height, self.__width = image.shape[:2]
         self.__channel = 1 if image.ndim == 2 else image.shape[-1]
@@ -29,6 +31,11 @@ class Data(object):
     def name(self) -> str:
         """Returns absolute path of image."""
         return self.__name
+
+    @property
+    def unique_id(self) -> str:
+        """Returns id of the image."""
+        return self.__id
 
     @property
     def basename(self) -> str:

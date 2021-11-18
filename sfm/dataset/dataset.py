@@ -1,10 +1,10 @@
 import os
-from datetime import datetime
 from functools import lru_cache
 from itertools import combinations
 from typing import Callable, List, Optional, Union
 
 from sfm.dataset.data import Data
+from sfm.utility.helper import unique_id_generator
 from tqdm import tqdm
 
 
@@ -32,22 +32,16 @@ class Dataset(object):
             self.__extension = [extension]
 
         self.__images = []
+        data_id_generator = unique_id_generator("IMAGE")
         for file in tqdm(os.listdir(image_dir), desc="Loading Images to Dataset "):
             if os.path.basename(file).split(".")[-1] not in self.__extension:
                 continue
             file = os.path.join(image_dir, file)
-            data = Data(file)
+            data = Data(file, next(data_id_generator))
             self.__images.append(data)
 
         self.__sorted = False
         self.__state = None
-
-    def get_ubique_id(self):
-        """generates unique id."""
-        dttime = datetime.now().strftime("%Y%m%d")
-        index = 0
-        while True:
-            index += 1
 
     @property
     @lru_cache(maxsize=64)

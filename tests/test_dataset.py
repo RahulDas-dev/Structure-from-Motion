@@ -33,9 +33,7 @@ class TestDatsetInstantiation(unittest.TestCase):
         """Instantiating Dataset Object with None."""
         with self.assertRaises(ValueError) as context:
             _ = Dataset(None, ["jpg", "png", "PNG", "jpeg"])
-        self.assertEqual(
-            "image_dir should be a valid directory", str(context.exception)
-        )
+        self.assertEqual("image_dir should be a valid directory", str(context.exception))
 
 
 class TestDatsetObject(unittest.TestCase):
@@ -51,29 +49,16 @@ class TestDatsetObject(unittest.TestCase):
         cls.dataset = None
 
     def test_image_count(self):
-        images = [
-            file
-            for file in os.listdir(DATASET_PATH)
-            if os.path.basename(file).split(".")[-1] in self.extension
-        ]
+        images = [file for file in os.listdir(DATASET_PATH) if os.path.basename(file).split(".")[-1] in self.extension]
         self.assertEqual(self.dataset.image_count, len(images))
 
     def test_getItem(self):
-        allFilesvalid = all(
-            [
-                os.path.exists(self.dataset[i].name)
-                for i in range(self.dataset.image_count)
-            ]
-        )
+        allFilesvalid = all([os.path.exists(self.dataset[i].name) for i in range(self.dataset.image_count)])
         self.assertEqual(allFilesvalid, True)
 
     def test_sorted(self):
         self.assertFalse(self.dataset.isSorted)
-        images = [
-            file
-            for file in os.listdir(DATASET_PATH)
-            if os.path.basename(file).split(".")[-1] in self.extension
-        ]
+        images = [file for file in os.listdir(DATASET_PATH) if os.path.basename(file).split(".")[-1] in self.extension]
         images = [os.path.join(DATASET_PATH, file) for file in images]
         shuffle((images))
         sortFunction = lambda x: int((os.path.basename(x).split(".")[0]).split("_")[-1])
@@ -90,6 +75,16 @@ class TestDatsetObject(unittest.TestCase):
         channel = 1 if image.ndim == 2 else image.shape[-1]
         size = int((height * width * channel) / (1024 * 1024))
         self.assertEqual(self.dataset[2].image_size, size)
+
+    def test_unique_id(self):
+        """Each data item of datset should have unique id."""
+        ids = set()
+        for i in range(self.dataset.image_count):
+            ids.add(self.dataset[i].unique_id)
+        self.assertEqual(self.dataset.image_count, len(ids))
+        ids = list(ids)
+        all_should_be_true = all(list(map(lambda x: True if "IMAGE" in x else False, ids)))
+        self.assertTrue(all_should_be_true)
 
 
 if __name__ == "__main__":

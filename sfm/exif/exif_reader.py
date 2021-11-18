@@ -15,75 +15,79 @@ logger = logging.getLogger(__name__)
 class ExifReader(object):
     """Module Reads Exif Data."""
 
-    metadata: Dict[str, str]
-    name: str
+    __metadata: Dict[str, str]
+    __name: str
+    __unique_id: str
 
-    def __init__(self, image_path: str):
+    __slots__ = ("__metadata", "__name", "__unique_id")
+
+    def __init__(self, image_path: str, unique_id: str):
         with open(image_path, "rb") as image_file:
-            self.metadata = Image(image_file)
-        self.name = base_name_converter(image_path)
+            self.__metadata = Image(image_file)
+        self.__name = base_name_converter(image_path)
+        self.__unique_id = unique_id
 
     @property
     def has_exif_metadat(self) -> bool:
-        """Confirm Metadata Exists or not."""
-        return self.metadata.has_exif
+        """Confirm __metadata Exists or not."""
+        return self.__metadata.has_exif
 
     @property
     def exif_version(self) -> str:
         """Extracts Exif version."""
-        return self.metadata.exif_version
+        return self.__metadata.exif_version
 
     @property
     def height(self) -> int:
         """Extracts Image height."""
-        if self.metadata.get("image_height", None) is not None:
-            return self.metadata.get("image_height")
-        return self.metadata.pixel_y_dimension
+        if self.__metadata.get("image_height", None) is not None:
+            return self.__metadata.get("image_height")
+        return self.__metadata.pixel_y_dimension
 
     @property
     def width(self) -> int:
         """Extracts Image width."""
-        if self.metadata.get("image_width", None) is not None:
-            return self.metadata.get("image_height")
-        return self.metadata.pixel_x_dimension
+        if self.__metadata.get("image_width", None) is not None:
+            return self.__metadata.get("image_height")
+        return self.__metadata.pixel_x_dimension
 
     @property
     def make(self) -> str:
-        if self.metadata.make is not None:
-            return self.metadata.make
-        return self.metadata.get("lens_make", None)
+        if self.__metadata.make is not None:
+            return self.__metadata.make
+        return self.__metadata.get("lens_make", None)
 
     @property
     def model(self) -> str:
-        if self.metadata.model is not None:
-            return self.metadata.model
-        return self.metadata.get("lens_model", None)
+        if self.__metadata.model is not None:
+            return self.__metadata.model
+        return self.__metadata.get("lens_model", None)
 
     @property
     def orientation(self) -> bool:
-        ori = self.metadata.get("orientation", 1)
+        ori = self.__metadata.get("orientation", 1)
         return ori if type(ori) == int and ori != 0 else 1
 
     @property
     def timestamp(self):
         """Extracts Image timestamp."""
-        if self.metadata.datetime_original is not None:
+        if self.__metadata.datetime_original is not None:
             return self.__format_date_time(
-                self.metadata.datetime_original,
-                self.metadata.subsec_time_original,
-                self.metadata.get("offset_time_original"),
+                self.__metadata.datetime_original,
+                self.__metadata.subsec_time_original,
+                self.__metadata.get("offset_time_original"),
             )
-        elif self.metadata.datetime_digitized is not None:
+        elif self.__metadata.datetime_digitized is not None:
             return self.__format_date_time(
-                self.metadata.datetime_digitized,
-                self.metadata.subsec_time_digitized,
-                self.metadata.get("offset_time_digitized"),
+                self.__metadata.datetime_digitized,
+                self.__metadata.subsec_time_digitized,
+                self.__metadata.get("offset_time_digitized"),
             )
-        elif self.metadata.datetime is not None:
+        elif self.__metadata.datetime is not None:
             return self.__format_date_time(
-                self.metadata.datetime,
-                self.metadata.subsec_time,
-                self.metadata.get("offset_time"),
+                self.__metadata.datetime,
+                self.__metadata.subsec_time,
+                self.__metadata.get("offset_time"),
             )
         else:
             return None
@@ -101,15 +105,15 @@ class ExifReader(object):
 
     @property
     def altitude(self) -> Optional[float]:
-        if self.metadata.gps_altitude is not None:
-            return self.metadata.gps_altitude
-        return self.metadata.get("gps_altitude", None)
+        if self.__metadata.gps_altitude is not None:
+            return self.__metadata.gps_altitude
+        return self.__metadata.get("gps_altitude", None)
 
     @property
     def altitude_ref(self) -> Optional[float]:
-        if self.metadata.gps_altitude_ref is not None:
-            return self.metadata.gps_altitude_ref
-        return self.metadata.get("gps_altitude_ref", None)
+        if self.__metadata.gps_altitude_ref is not None:
+            return self.__metadata.gps_altitude_ref
+        return self.__metadata.get("gps_altitude_ref", None)
 
     @staticmethod
     def decimal_coords(coords: Tuple[float, float, float], ref: Optional[str]) -> float:
@@ -121,38 +125,39 @@ class ExifReader(object):
     @property
     def latitude(self) -> Optional[Tuple[float, float, float]]:
         """Extracts GPS Latitude."""
-        if self.metadata.gps_latitude is not None:
-            return self.metadata.gps_latitude
-        return self.metadata.get("gps_latitude", None)
+        if self.__metadata.gps_latitude is not None:
+            return self.__metadata.gps_latitude
+        return self.__metadata.get("gps_latitude", None)
 
     @property
     def latitude_ref(self) -> Optional[str]:
         """Extracts GPS Latitude referance."""
-        if self.metadata.gps_latitude_ref is not None:
-            return self.metadata.gps_latitude_ref
-        return self.metadata.get("gps_latitude_ref", None)
+        if self.__metadata.gps_latitude_ref is not None:
+            return self.__metadata.gps_latitude_ref
+        return self.__metadata.get("gps_latitude_ref", None)
 
     @property
     def longitude(self) -> Optional[Tuple[float, float, float]]:
         """Extracts GPS Longitude."""
-        if self.metadata.gps_longitude is not None:
-            return self.metadata.gps_longitude
-        return self.metadata.get("gps_longitude", None)
+        if self.__metadata.gps_longitude is not None:
+            return self.__metadata.gps_longitude
+        return self.__metadata.get("gps_longitude", None)
 
     @property
     def longitude_ref(self) -> Optional[str]:
         """Extracts GPS Longitude referance."""
-        if self.metadata.gps_longitude_ref is not None:
-            return self.metadata.gps_longitude_ref
-        return self.metadata.get("gps_longitude_ref", None)
+        if self.__metadata.gps_longitude_ref is not None:
+            return self.__metadata.gps_longitude_ref
+        return self.__metadata.get("gps_longitude_ref", None)
 
     @property
     def dop(self) -> Optional[str]:
-        return self.metadata.get("gps_dop", None)
+        return self.__metadata.get("gps_dop", None)
 
     def data_as_dictonary(self) -> Dict:
         return {
-            "file": self.name,
+            "file": self.__name,
+            "image_id": self.__unique_id,
             "exif_version": self.exif_version,
             "make": self.make,
             "model": self.model,
