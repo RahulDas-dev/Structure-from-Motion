@@ -11,3 +11,4 @@ inline-quotes = '"'
 line_length=120
 default_section = THIRDPARTY
 sections = STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER
+profile=black

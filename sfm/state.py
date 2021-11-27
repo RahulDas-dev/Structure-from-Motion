@@ -5,6 +5,7 @@ from typing import Dict, List
 APP_STATE_DETAILS: List[Dict[str, str]] = [
     {"name": "EXIF_EXTRACTION", "file": "exif_data.json"},
     {"name": "FEATURE_EXTRACTION", "subdir": "feature_data"},
+    {"name": "PAIR_SELECTION", "file": "image_pair_data.json"},
     {"name": "MATCHING_FEATURE", "subdir": "matching_data"},
 ]
 

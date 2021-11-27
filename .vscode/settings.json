@@ -26,7 +26,7 @@
         "--profile",
         "black"
     ],
-    "python.pythonPath": "/usr/bin/python3",
+    "python.pythonPath": "C:\\Users\\admin\\.virtualenvs\\Structure-from-Motion-RSsSS-Ch\\Scripts\\python.exe",
     "python.testing.unittestArgs": [
         "-v",
         "-s",

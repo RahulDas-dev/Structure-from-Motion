@@ -36,9 +36,7 @@ class Config(object):
         """
         if Config.__instance is not None:
             print(Config.__instance)
-            raise Exception(
-                "Config Class has been instantiated, kindly use Instance Method"
-            )
+            raise Exception("Config Class has been instantiated, kindly use Instance Method")
         timestamp = datetime.now().strftime("%d-%m-%Y_%H:%M:%S")
         config_obj["created_at"] = timestamp
         config_obj["exp_id"] = f"SFM_EXPERIMENT_{timestamp}"
@@ -97,6 +95,21 @@ class Config(object):
         """Returns the sift_peak_threshold."""
         return float(self.__config.get("sift_peak_threshold"))
 
+    @property
+    def max_distance(self) -> float:
+        """Returns the minimum physical distance beween two image."""
+        return float(self.__config.get("max_distance", 0.0))
+
+    @property
+    def gps_neighbour(self) -> float:
+        """Returns the minimum physical distance beween two image."""
+        return float(self.__config.get("gps_neighbour", 0.0))
+
+    @property
+    def time_neightbour(self) -> float:
+        """Returns the time gap pbeween two image captures."""
+        return float(self.__config.get("time_neightbour", 0.0))
+
     @staticmethod
     def valid_state_names() -> List[str]:
         """Returns the list if of Statenames."""
@@ -106,9 +119,7 @@ class Config(object):
         """Determine Subdirectory Path for Given State."""
         if state_name not in self.valid_state_names():
             raise ValueError(f"State {state_name} is not valid")
-        statedict = list(filter(lambda x: x["name"] == state_name, APP_STATE_DETAILS))[
-            0
-        ]
+        statedict = list(filter(lambda x: x["name"] == state_name, APP_STATE_DETAILS))[0]
         subdir: Optional[str] = statedict.get("subdir", None)
         filename: Optional[str] = statedict.get("file", None)
         if filename is not None:
