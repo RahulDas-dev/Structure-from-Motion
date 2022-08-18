@@ -1,8 +1,23 @@
 """Module Contains Helper Functions."""
 
 import os
+from typing import List
 
 import psutil
+
+
+def get_file_count(dir_path: str, allowed_extension: List[str] = None) -> int:
+    if os.path.isdir(dir_path) is False:
+        return -1
+    if allowed_extension is None:
+        return len(os.listdir(dir_path))
+    images = list(
+        filter(
+            lambda x: os.path.basename(x).split(".")[-1] in allowed_extension,
+            os.listdir(dir_path),
+        )
+    )
+    return len(images)
 
 
 def base_name_converter(filename: str) -> str:

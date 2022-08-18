@@ -19,6 +19,7 @@ class ExifExtractor(Component):
 
     def __init__(self, chainable: bool = False):
         super().__init__("EXIF_EXTRACTION", chainable=chainable)
+        self.exif_data_list = []
 
     @lru_cache(maxsize=16)
     def iscompleted(self, count: int) -> bool:
@@ -35,15 +36,16 @@ class ExifExtractor(Component):
 
     def move_forward(self, dataset: Dataset):
         start_time = datetime.now()
-        exif_data_list = []
+        exif_data_json = []
         for index in tqdm(range(dataset.image_count), desc="Exif Extraction : "):
             data = dataset[index]
-            exif_data = ExifReader(data.name, data.unique_id)
+            exif_data = ExifReader(data.name, data.uid)
             if exif_data.has_exif_metadat is not True:
                 continue
-            exif_data_list.append(exif_data.data_as_dictonary())
+            exif_data_json.append(exif_data.data_as_dictonary())
+            self.exif_data_list.append(ExifData(**exif_data.data_as_dictonary()))
         with open(self.output_path, "w") as meta_data_file:
-            json.dump(exif_data_list, meta_data_file, indent=4)
+            json.dump(exif_data_json, meta_data_file, indent=4)
         logger.info(f"Exif Extraction Time (hh:mm:ss.ms) {datetime.now() - start_time}")
 
     def reload(self, dataset: Dataset):
@@ -53,9 +55,7 @@ class ExifExtractor(Component):
             exif_data_list = json.load(meta_data_file)
         for index in tqdm(range(dataset.image_count), desc="Exif Data Loading : "):
             data = dataset[index]
-            exif_data = list(
-                filter(lambda x: x["name"] == data.basename, exif_data_list)
-            )[0]
+            exif_data = list(filter(lambda x: x["name"] == data.basename, exif_data_list))[0]
             exif_data_list.remove(exif_data)
         time_elapsed = datetime.now() - start_time
         logger.info(f"Exif data Loading Time (hh:mm:ss.ms) {time_elapsed}")

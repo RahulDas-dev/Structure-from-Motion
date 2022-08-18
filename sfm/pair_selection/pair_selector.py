@@ -26,7 +26,7 @@ class PairSelector(Component):
         self.__time_neightbour = config.time_neightbour
         (exif_dir, exif_path) = config.sub_directory_path("EXIF_EXTRACTION")
         self.exif_meadata_path = os.path.join(exif_dir, exif_path)
-        logger.info(f"Pair Selection initilized")
+        logger.info("Pair Selection initilized")
 
     @lru_cache(maxsize=16)
     def iscompleted(self, count: int) -> bool:

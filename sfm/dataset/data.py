@@ -10,19 +10,21 @@ from sfm.utility.helper import base_name_converter
 logger = logging.getLogger(__name__)
 
 
-@dataclass(init=True, repr=True, eq=True, frozen=True)
+@dataclass(init=False, frozen=True)
 class Data:
     """Class Defines Data Object."""
 
     name: str = field(compare=True)
-    unique_id: str = field(compare=True)
-    height: int = field(init=False)
-    width: int = field(init=False)
-    channel: int = field(init=False)
+    uid: str = field(compare=True)
+    height: int
+    width: int
+    channel: int
 
-    def __post_init__(self):
+    def __init__(self, name, unique_id):
         """Initilizing Data objects with name and id."""
-        image = cv2.imread(self.name)
+        object.__setattr__(self, "name", name)
+        object.__setattr__(self, "uid", unique_id)
+        image = cv2.imread(name)
         height, width = image.shape[:2]
         channel = 1 if image.ndim == 2 else image.shape[-1]
         object.__setattr__(self, "height", height)
