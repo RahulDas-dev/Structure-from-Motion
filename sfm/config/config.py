@@ -1,41 +1,45 @@
 """Module Defines Config Desines."""
 
 import os
-from dataclasses import dataclass, field
-from typing import List
+from dataclasses import dataclass
+from typing import Tuple
 
-from ..utility.helper import get_file_count
+from sfm.utility import get_file_count
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, init=True, repr=False)
 class Config:
     """Config Class Defination."""
 
-    dataset_path: str
-    output_path: str
+    # __slots__ = ("dataset_dir", "output_dir", "log_dir", "feature_extractor", "max_keypoint", "allowed_extension")
+
+    dataset_dir: str
+    output_dir: str
     feature_extractor: str = "SIFT"
-    max_keypoint_cont: int = 5000
-    allowed_extension: List[str] = field(default_factory=lambda: ["jpeg", "jpg", "png", "PNG"])
+    max_keypoint: int = 5000
+    extension: str = "jpeg"
+    allowed_extension: Tuple[str] = ("jpeg", "jpg", "png", "PNG")
+    min_image_count: int = 3
 
     def __post_init__(self):
-        if os.path.isdir(self.dataset_path) is False:
+        if self.extension not in self.allowed_extension:
+            raise RuntimeError("Extensions are not valid")
+
+        if os.path.isdir(self.dataset_dir) is False:
             raise NotADirectoryError("dataset_path directory should be a valid")
 
-        if get_file_count(self.dataset_path, self.allowed_extension) > 2:
+        if get_file_count(self.dataset_dir, self.extension) < self.min_image_count:
             raise FileNotFoundError("dataset_path directory should contain image files")
 
-        if os.path.isdir(self.output_path) is False:
+        if os.path.isdir(self.output_dir) is False:
             raise NotADirectoryError("dataset_path directory should be a valid")
-        if len(os.listdir(self.output_path)) > 1:
+        if len(os.listdir(self.output_dir)) > 1:
             raise RuntimeError("output_path directory should be empty")
 
-
-def ConfigDecoder(object_):
-    if "__type__" in object_ and object_["__type__"] == "Config":
-        return Config(**object_)
-    return object_
-
-
-studentObj = json.loads(
-    '{"__type__": "Student", "rollNumber":1, "name": "Ault kelly", "marks": 78}', object_hook=studentDecoder
-)
+    def __repr__(self) -> str:
+        return f"""
+        Dataset Directory : { self.dataset_dir }
+        Output  Directory : { self.output_dir }
+        extension         : { self.extension }
+        max_keypoint      : { self.max_keypoint }
+        """

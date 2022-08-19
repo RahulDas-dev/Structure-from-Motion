@@ -1,17 +1,21 @@
 {
     "search.exclude": {
         "**/__pycache__": true,
-        ".env/": true,
+        ".venv/": true,
     },
     "files.exclude": {
         "**/.git": true,
-        ".env/": true,
+        ".venv/": true,
     },
     "files.watcherExclude": {
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
         "**/__pycache__": true,
-        ".env/": true,
+        ".venv/": true,
+    },
+    "workbench.colorCustomizations": {
+        "terminal.background":"#1f2527",
+        "terminal.foreground":"#A89984",
     },
     "[python]": {
         "editor.defaultFormatter": null,
