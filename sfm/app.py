@@ -5,7 +5,7 @@ import json
 import logging
 import timeit
 
-from sfm.config.config import Config
+from sfm.config import Config
 from sfm.utility import unique_exp_id
 
 logger = logging.getLogger(__name__)
@@ -30,11 +30,11 @@ class SFMEnginee:
         """Printing Config and Other info before running App."""
         logger.info(
             f"""
-            ------------------------------------------------------
-            Experiment ID   : { self.experiment_id}
-            {self.config}
-            ------------------------------------------------------
-            """
+        ------------------------------------------------------
+        Experiment ID   : { self.experiment_id}
+        {self.config}
+        ------------------------------------------------------
+        """
         )
 
     def load_config(self):
@@ -46,6 +46,4 @@ class SFMEnginee:
         start_time = timeit.default_timer()
         self.load_config()
         self.display_info()
-        logger.info(
-            f"End to End Processing Time  { timeit.default_timer() - start_time }"
-        )
+        logger.info(f"End to End Processing Time  { timeit.default_timer() - start_time }")

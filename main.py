@@ -43,7 +43,7 @@ arguments = parser.parse_args()
 def main():
     logging.config.fileConfig(LOGGER_CONFIG_FILE, disable_existing_loggers=False)
     # logger = logging.getLogger(__name__)
-    # logger.handlers["file_handerler"]["filename"] = "x.log"
+    # logger.handlers['file_handler'].a
     application = SFMEnginee(arguments.config_path, arguments.exp_id)
     application()
 
