@@ -7,8 +7,8 @@ from typing import Tuple
 
 from sfm.component import Component
 from sfm.config.config import Config
-from sfm.dataset.data import Data
 from sfm.dataset.dataset import Dataset
+from sfm.dataset.imageinfo import Data
 from sfm.exif.exif_loader import ExifLoader
 
 logger = logging.getLogger(__name__)
